@@ -1,0 +1,80 @@
+// Copyright (C) 2020 A.Manuel L.Perez <amanuel.lperez@gmail.com>
+//
+// This file is part of the ALP Library.
+//
+// ALP Library is a free library: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+#include "../../img_algorithm.h"
+
+#include <alp_test.h>
+#include <iostream>
+
+using namespace test;
+using namespace img;
+
+using namespace std;
+
+void test_alg()
+{
+    test::interfaz("algorithm");
+
+    Imagen img0{2,2};
+    img0(0,0) = ColorRGB{1,1,1};
+    img0(0,1) = ColorRGB{2,2,2};
+    img0(1,0) = ColorRGB{3,3,3};
+    img0(1,1) = ColorRGB{4,4,4};
+
+    int a = 3;
+    auto img1 = expande(img0, a);
+    CHECK_TRUE((img1.rows() == a*img0.rows()
+		and img1.cols() == a*img0.cols()), "expande.size()");
+
+    Imagen res{3, 3};
+    std::fill(res.begin(), res.end(), img0(0,0));
+    Subimagen sb{img1, Posicion{0,0}, Size2D{3,3}};
+    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+			, "expande()");
+
+    std::fill(res.begin(), res.end(), img0(0,1));
+    sb.extension(Posicion{0,3}, Size2D{3,3});
+    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+			, "expande()");
+
+    std::fill(res.begin(), res.end(), img0(1,0));
+    sb.extension(Posicion{3,0}, Size2D{3,3});
+    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+			, "expande()");
+
+    std::fill(res.begin(), res.end(), img0(1,1));
+    sb.extension(Posicion{3,3}, Size2D{3,3});
+    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+			, "expande()");
+
+}
+
+
+
+
+int main()
+{
+try{
+    test::header("img_alg.h");
+    test_alg();
+
+}catch(const std::exception& e){
+    std::cerr << e.what() << '\n';
+    return 1;
+}
+}

@@ -1,0 +1,5 @@
+color
+imagen
+view
+alg
+draw
