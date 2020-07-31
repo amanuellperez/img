@@ -20,5 +20,7 @@ xx
 # tags
 tags
 
+
 # vim files
 *.swp
+.clang-format
