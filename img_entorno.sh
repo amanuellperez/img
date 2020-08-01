@@ -1,7 +1,7 @@
 # -------------------------
 # Estructura de directorios
 # -------------------------
-IMG_ROOT=${MY_HOME}/prj/cpp/img		; export IMG_ROOT
+IMG_ROOT=${MY_HOME}/prj/git/img		; export IMG_ROOT
 IMG_SRC=${IMG_ROOT}/src				; export IMG_SRC
 IMG_MK=${IMG_ROOT}/mk	    ; export IMG_MK
 

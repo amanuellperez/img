@@ -26,7 +26,7 @@
 
 namespace img{
 
-using Segmento        = alp::Segmento<Posicion>;
+using Segmento   = alp::Segment_ij<int>;
 //using Rectangulo = alp::Rectangulo<Posicion>;
 using Rectangulo = alp::Rectangle_ij<int>;
 
@@ -61,15 +61,15 @@ void draw(Imagen& img, const Segmento& s, const ColorRGB& color);
 
 inline void draw(Imagen& img, const Rectangulo& r, const ColorRGB& color)
 {
-//    draw(img, Segmento{r.upper_left_corner(), r.upper_right_corner()}, color);
-//    draw(img, Segmento{r.bottom_left_corner(), r.bottom_right_corner()}, color);
-//    draw(img, Segmento{r.upper_left_corner(), r.bottom_left_corner()}, color);
-//    draw(img, Segmento{r.upper_right_corner(), r.bottom_right_corner()}, color);
+    draw(img, Segmento{r.upper_left_corner(), r.upper_right_corner()}, color);
+    draw(img, Segmento{r.bottom_left_corner(), r.bottom_right_corner()}, color);
+    draw(img, Segmento{r.upper_left_corner(), r.bottom_left_corner()}, color);
+    draw(img, Segmento{r.upper_right_corner(), r.bottom_right_corner()}, color);
 
-    draw(img, Segmento{r.SI(), r.SD()}, color);
-    draw(img, Segmento{r.II(), r.ID()}, color);
-    draw(img, Segmento{r.SI(), r.II()}, color);
-    draw(img, Segmento{r.SD(), r.ID()}, color);
+//    draw(img, Segmento{r.SI(), r.SD()}, color);
+//    draw(img, Segmento{r.II(), r.ID()}, color);
+//    draw(img, Segmento{r.SI(), r.II()}, color);
+//    draw(img, Segmento{r.SD(), r.ID()}, color);
 }
 
 inline void draw_lineaH(Imagen& img, Imagen::Ind i, const ColorRGB& c)

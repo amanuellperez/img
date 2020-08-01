@@ -38,6 +38,7 @@
 #include <alp_matrix_algorithm.h> // posicion_del_centro
 #include <alp_math.h>
 #include <alp_type_traits.h>
+#include <alp_rframe_xy.h>
 
 #include "img_imagen.h"	// Rectangulo
 #include "img_color.h"	// Color_red...
@@ -193,7 +194,7 @@ public:
 
     // Tipos
     using Ind	    = int;
-    using Punto	    = alp::Punto_xy<Ind>;
+    using Punto	    = alp::Vector_xy<Ind>;
 
     using value_type= Imagen::value_type;
 
@@ -327,7 +328,7 @@ public:
 
     using Longitud  = Imagen_xy::Ind;
     using value_type= Imagen_xy::value_type;
-    using Punto	    = alp::Punto_xy<Ind>;
+    using Punto	    = alp::Vector_xy<Ind>;
 
     using Ind_xy = Imagen_xy::Ind;
 
