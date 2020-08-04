@@ -188,19 +188,33 @@ inline auto const_imagen_blue(Container2D& img1)
  *
  *  TODO: es genérico si se parametriza por Imagen. Llevarlo a alp.
  */
-class Imagen_xy{
+template <typename Imagen_type>
+class Imagen_xy_base{
 public:
-    // Las coordenadas (x,y) van a ser enteras.
+    // Objetos que contiene
+    using value_type      = alp::Value_type<Imagen_type>;
+    using reference       = alp::Reference_type<Imagen_type>;
+    using const_reference = typename Imagen_type::const_reference;
+    using pointer         = alp::Pointer_type<Imagen_type>;
+    using const_pointer   = typename Imagen_type::const_pointer;
 
-    // Tipos
-    using Ind	    = int;
-    using Punto	    = alp::Vector_xy<Ind>;
+    // Indices unidimensionales
+    using size_type       = typename Imagen_type::size_type;
+    using difference_type = typename Imagen_type::difference_type;
 
-    using value_type= Imagen::value_type;
+    // Tipos que definen los contenedores bidimensionales
+    using Ind           = typename Imagen_type::Ind;
+    using Posicion	= typename Imagen_type::Posicion;
+    using Size2D	= typename Imagen_type::Size2D;
+
+    // Propios
+    using Point	    = alp::Vector_xy<Ind>;
+    using Vector    = alp::Vector_xy<Ind>;
+
 
     /// Colocamos una máscara sobre la imagen img0. Por defecto el origen de
     /// coordenadas esta en la esquina inferior izquierda de la imagen.
-    Imagen_xy(Imagen& img0, Ind i0 = - 1, Ind j0 = -1)
+    Imagen_xy_base(Imagen_type& img0, Ind i0 = - 1, Ind j0 = -1)
 	    :img_{&img0}
     {
 	if (i0 != -1)
@@ -221,6 +235,9 @@ public:
     void origen_de_coordenadas(const Posicion& p0)
     {origen_de_coordenadas(p0.i, p0.j);}
 
+    Posicion origen_de_coordenadas() const
+    { return Posicion{i0_, j0_};}
+
     /// Colocamos el origen de coordenadas en el centro de la imagen
     void origen_de_coordenadas_en_el_centro()
     { origen_de_coordenadas(alp::posicion_del_centro(*img_)); }
@@ -228,7 +245,7 @@ public:
     /// Valor mínimo de x
     Ind x_min() const {return x(0);}
 
-    /// Valor máximo de x
+    /// Valor máximo que puede tener x (img(x_max()) es válido).
     Ind x_max() const {return x(cols() - 1);}
 
     /// Valor mínimo de y
@@ -248,14 +265,14 @@ public:
     /// OJO: se da por supuesto que el usuario sabe dónde está accediendo.
     /// Es responsabilidad del usuario validar que los puntos (x, y) sean
     /// puntos válidos de la imagen.
-    value_type& operator()(Ind x, Ind y)
+    reference operator()(Ind x, Ind y)
     {return (*img_)(posicion(x,y));}
 
     /// Devuelve el color del pixel (x,y)
     /// OJO: se da por supuesto que el usuario sabe dónde está accediendo.
     /// Es responsabilidad del usuario validar que los puntos (x, y) sean
     /// puntos válidos de la imagen.
-    const value_type& operator()(Ind x, Ind y) const
+    const_reference operator()(Ind x, Ind y) const
     {return (*img_)(posicion(x,y));}
 
 
@@ -266,31 +283,31 @@ public:
     { return {i(y), j(x)};}
 
     /// Devuelve la posición (i,j) a la que apunta el punto p
-    Posicion posicion(const Punto& p) const
+    Posicion posicion(const Point& p) const
     {return posicion(p.x, p.y);}
 
 
     /// Cambia la coordenada x en la coordenada j correspondiente
-    Imagen::Ind j(Ind x) const { return (j0_ + x); }
+    Ind j(Ind x) const { return (j0_ + x); }
 
     /// Cambia la coordenada y en la coordenada i correspondiente
-    Imagen::Ind i(Ind y) const { return (i0_ - y);}
+    Ind i(Ind y) const { return (i0_ - y);}
 
     /// Pasamos de j a x (j --> x)
-    Ind x(Imagen::Ind j) const { return (j - j0_);}
+    Ind x(Ind j) const { return (j - j0_);}
 
     /// Pasamos de i a y (i --> y)
-    Ind y(Imagen::Ind i) const { return (i0_ - i);}
+    Ind y(Ind i) const { return (i0_ - i);}
 
 
     /// Acceso a la imagen
-    Imagen& img() {return *img_;}
+    Imagen_type& img() {return *img_;}
 
     /// Acceso a la imagen
-    const Imagen& img() const {return *img_;}
+    const Imagen_type& img() const {return *img_;}
 
 private:
-    Imagen* img_;
+    Imagen_type* img_;
 
     // Coordenadas de matriz (i, j) del origen del sistema de referencia.
     Ind i0_, j0_;
@@ -300,13 +317,35 @@ private:
 
 // Fijamos el origen de coordenadas. Después de la llamada de esta
 // función cualquier acceso usará este nuevo origen.
-inline void Imagen_xy::origen_de_coordenadas(Ind i0, Ind j0)
+template <typename It>
+inline void Imagen_xy_base<It>::origen_de_coordenadas(Ind i0, Ind j0)
 {
     i0_ = i0;
     j0_ = j0;
 }
 
+// Corners
+// -------
+template <typename It>
+inline Imagen_xy_base<It>::Point upper_left_corner(const Imagen_xy_base<It>& img0)
+{ return {img0.x_min(), img0.y_max()};}
 
+template <typename It>
+inline Imagen_xy_base<It>::Point upper_right_corner(const Imagen_xy_base<It>& img0)
+{ return {img0.x_max(), img0.y_max()};}
+
+template <typename It>
+inline Imagen_xy_base<It>::Point bottom_left_corner(const Imagen_xy_base<It>& img0)
+{ return {img0.x_min(), img0.y_min()};}
+
+template <typename It>
+inline Imagen_xy_base<It>::Point bottom_right_corner(const Imagen_xy_base<It>& img0)
+{ return {img0.x_max(), img0.y_min()};}
+
+
+// Alias
+using Imagen_xy = Imagen_xy_base<Imagen>;
+using const_Imagen_xy = Imagen_xy_base<const Imagen>;
 
 
 /***************************************************************************
@@ -328,7 +367,7 @@ public:
 
     using Longitud  = Imagen_xy::Ind;
     using value_type= Imagen_xy::value_type;
-    using Punto	    = alp::Vector_xy<Ind>;
+    using Point	    = alp::Vector_xy<Ind>;
 
     using Ind_xy = Imagen_xy::Ind;
 

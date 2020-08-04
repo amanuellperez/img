@@ -23,52 +23,68 @@
  *
  ****************************************************************************/
 #include "img_algorithm.h"
-#include <alp_trace.h>
 
+#include <alp_rframe_xy.h>
+
+#include "img_draw.h"
 
 namespace img
 {
 
-//static Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle)
-//{
-//    Posicion A = _rotate_rota(esquina_superior_derecha(img0), angle);
-//    Posicion B = _rotate_rota(esquina_inferior_derecha(img0), angle);
-//    Posicion C = _rotate_rota(esquina_inferior_izquierda(img0), angle);
-//    Posicion D = _rotate_rota(esquina_superior_izquierda(img0), angle)
-//
-//    Size2D sz;
-//
-//    if (angle < alp::Degree{90}){
-//	sz.rows = B. AQUIII
-//	sz.cols = 
-//    }
-//    else if (angle < alp::Degree{180}){
-//    }
-//    else if (angle < alp::Degree{270}){
-//    }
-//    else {
-//    }
-//
-//    return sz;
-//}
-//
-//
-//Imagen rotate(const Imagen& img0, const alp::Degree& angle)
-//{
-//    angle = angle % 360; // normalizamos a [0, 360)
-//
-//    Imagen_xy v0{img0}; // v0 = view0
-//    v0.origen_de_coordenadas_en_el_centro();
-//
-//    Imagen y{_rotate_dimensions(v0)};
-//    Imagen_xy v1{y};
-//    v1.origen_de_coordenadas_en_el_centro();
-//    AQUIII
-//
-//
-//    return y;
-//
-//}
+Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle)
+{
+    using Vector= const_Imagen_xy::Vector;
+
+    const_Imagen_xy img_xy{img0};
+
+    img_xy.origen_de_coordenadas_en_el_centro();
+
+    // diagonales
+    Vector d1 = upper_right_corner(img_xy) - bottom_left_corner(img_xy);
+    Vector d2 = upper_left_corner(img_xy) - bottom_right_corner(img_xy);
+
+    d1 = alp::rotate(d1, angle);
+    d2 = alp::rotate(d2, angle);
+    
+    Size2D sz;
+    sz.rows = std::max(std::abs(d1.y), std::abs(d2.y)) + 1;
+    sz.cols = std::max(std::abs(d1.x), std::abs(d2.x)) + 1;
+
+    return sz;
+}
+
+
+
+
+Imagen rotate(const Imagen& img0, alp::Degree angle)
+{
+    angle = alp::normalize(angle);
+
+    const_Imagen_xy v0{img0}; // v0 = view0
+    v0.origen_de_coordenadas_en_el_centro();
+
+    auto y = img::imagen_negra(_rotate_dimensions(img0, angle));
+    Imagen_xy v1{y};
+    v1.origen_de_coordenadas_en_el_centro();
+
+    Reference_frame_rotation rota{angle};
+
+    for (int x = v0.x_min(); x <= v0.x_max(); ++x){
+	for (int y = v0.y_min(); y <= v0.y_max(); ++y){
+	    auto [X, Y] = rota(x, y);
+
+	    if (v1.x_min() <= X and X <= v1.x_max()
+			    and
+		v1.y_min() <= Y and Y <= v1.y_max()) {
+		v1(X,Y) = v0(x,y);
+	    }
+	}
+    }
+
+
+    return y;
+
+}
 
 
 
@@ -198,6 +214,20 @@ Imagen expande(const Imagen& img0, Imagen::Ind a)
 
     return res;
 }
+
+
+Reference_frame_rotation::Reference_frame_rotation(const alp::Degree& angle)
+    : sin_{alp::sin(angle)}, cos_{alp::cos(angle)} { }
+
+
+std::pair<int, int> Reference_frame_rotation::operator()(int x, int y) const
+{
+    int X = std::round(x*cos_ - y*sin_);
+    int Y = std::round(x*sin_ + y*cos_);
+
+    return {X, Y};
+}
+
 
 
 }// namespace img

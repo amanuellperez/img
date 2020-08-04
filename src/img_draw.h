@@ -39,11 +39,9 @@ Imagen imagen_monocolor(Imagen::Ind num_filas
 inline Imagen imagen_monocolor(Imagen::Size2D sz, const ColorRGB& color)
 {return imagen_monocolor(sz.rows, sz.cols, color);}
 
-/// Crea una imagen de tamaño num_filas x num_cols totalmente negra
-inline Imagen imagen_negra(Imagen::Ind num_filas
-					    , Imagen::Ind num_cols)
-{ return imagen_monocolor(num_filas, num_cols, ColorRGB::negro());}
-
+/// Crea una imagen de tamaño `rows x cols` totalmente negra
+inline Imagen imagen_negra(Imagen::Ind rows, Imagen::Ind cols)
+{ return imagen_monocolor(rows, cols, ColorRGB::negro());}
 
 /// Crea una imagen de tamaño num_filas x num_cols totalmente negra
 inline Imagen imagen_negra(Imagen::Size2D sz)
@@ -144,8 +142,8 @@ inline void draw_eje_y(Imagen_xy& img_xy, Imagen_xy::Ind x, const ColorRGB& c)
 // no, por eso lo defino así. Ahora bien, si se usa mucho Imagen_xy acabar por
 // definir todas las funciones de dibujo para esta máscara.
 inline void draw_segmento(Imagen_xy& img_xy
-			, const Imagen_xy::Punto& A
-			, const Imagen_xy::Punto& B, const ColorRGB& c)
+			, const Imagen_xy::Point& A
+			, const Imagen_xy::Point& B, const ColorRGB& c)
 { draw(img_xy.img(), Segmento{img_xy.posicion(A), img_xy.posicion(B)}, c);}
 
 

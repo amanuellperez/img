@@ -31,6 +31,7 @@
  *  - HISTORIA:
  *    A.Manuel L.Perez
  *	22/03/2016 Escrito
+ *	04/08/2020 rotate
  *
  ****************************************************************************/
 
@@ -44,8 +45,17 @@
 
 namespace img{
 
+// Devuelve las dimensiones donde alojar la imagen rotada.
+Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle);
+
 /// Rota la imagen img0 `angle` grados.
-Imagen rotate(const Imagen& img0, const alp::Degree& angle);
+// Tiene el problema de que por culpa de los redondeos la imagen rotada tiene
+// "agujeros". 
+// 1.- Revisar que realmente los agujeros sean por culpa del redondeo y no un
+// error de programa.
+// 2.- ¿Cómo corregirlo? Parece sencillo crear un filtro que rellene los
+// agujeros.
+Imagen rotate(const Imagen& img0, alp::Degree angle);
 
 /// Rota la imagen +90 grados.
 ///
@@ -93,8 +103,31 @@ Imagen expande(const Imagen& img0, int /* Ancho */ ancho);
 
 
 
+// TODO: ¿Cómo generalizar esta clase?
+// Ahora el operator(x,y) está pasando de (x,y) a (X,Y). ¿Cómo llamar a la
+// función que haga lo contrario? 
+// Usar Vector_xy en vez de (x,y). Se podía usar algo parecido a
+// Vector_xy_in???:
+//	Reference_frame_rotation rotate{alp::Degree{30}};
+//	rotate(Vector_xy_in<0>): hace (X,Y) --> (x,y)
+//	rotate(Vector_xy_in<1>): hace (x,y) --> (X,Y).
+//  ¿O usar otro vector diferente a Vector_xy_in?
+class Reference_frame_rotation{
+public:
+    Reference_frame_rotation(const alp::Degree& angle);
+
+    // (x,y) --> (X,Y)
+    std::pair<int, int> operator()(int x, int y) const;
 
 
+private:
+    double sin_;    // sin(angle)
+    double cos_;    // cos(angle)
+
+};
+
+
+// TODO: comentar esta (???) Para depurar usar test::print2D ???
 inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
 { 
     for(auto f = img.row_begin(); f!= img.row_end(); ++f)

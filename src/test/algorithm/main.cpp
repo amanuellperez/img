@@ -65,6 +65,67 @@ void test_alg()
 }
 
 
+void test_rotate(const alp::Degree& angle, const std::string& img_name)
+{
+    std::cout << "\n\ntest_rotate(" << angle.value() << ") <-- MIRAR LA IMAGEN RESULTANTE\n";
+
+    img::Imagen img0 = img::read(img_name);
+
+    auto img1 = rotate(img0, angle);
+
+    img::write(img1, alp::as_str() << "rotate" << angle.value() << ".jpg");
+}
+
+
+
+void test_rotate()
+{
+    test::interfaz("rotate");
+
+    {
+	img::Imagen img0{5, 10};
+	std::cout << img::_rotate_dimensions(img0, alp::Degree{0}) << '\n';
+
+        CHECK_TRUE(
+            (img::_rotate_dimensions(img0, alp::Degree{0}) == Size2D{5, 10}),
+            "rotate(0)");
+        CHECK_TRUE(
+            (img::_rotate_dimensions(img0, alp::Degree{90}) == Size2D{10, 5}),
+            "rotate(90)");
+        CHECK_TRUE(
+            (img::_rotate_dimensions(img0, alp::Degree{180}) == Size2D{5, 10}),
+            "rotate(180)");
+        CHECK_TRUE(
+            (img::_rotate_dimensions(img0, alp::Degree{270}) == Size2D{10, 5}),
+            "rotate(270)");
+    }
+
+    for (int th = 10; th < 360; th += 10)
+	test_rotate(th, "prueba.jpg");
+}
+
+void test_refence_frame_rotation(const alp::Degree& angle, 
+				 int x, int y, int X_res, int Y_res)
+{
+    img::Reference_frame_rotation rota{angle};
+    auto [X, Y] = rota(x, y);
+//std::cout << "(X, Y) = (" << X << ", " << Y << ")\n";
+    CHECK_TRUE(X == X_res and Y == Y_res,
+               alp::as_str() << "rota(" << x << ", " << y << ")");
+}
+
+void test_refence_frame_rotation()
+{
+    test::interfaz("Reference_frame_rotation");
+
+    test_refence_frame_rotation(alp::Degree{0}, 10, 10, 10, 10);
+    test_refence_frame_rotation(alp::Degree{40}, 10, 10, 1, 14);
+    test_refence_frame_rotation(alp::Degree{90}, 10, 10, -10, 10);
+    test_refence_frame_rotation(alp::Degree{180}, 10, 10, -10, -10);
+    test_refence_frame_rotation(alp::Degree{270}, 10, 10, 10, -10);
+    test_refence_frame_rotation(alp::Degree{360}, 10, 10, 10, 10);
+}
+
 
 
 int main()
@@ -72,6 +133,8 @@ int main()
 try{
     test::header("img_alg.h");
     test_alg();
+    test_rotate();
+    test_refence_frame_rotation();
 
 }catch(const std::exception& e){
     std::cerr << e.what() << '\n';

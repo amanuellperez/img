@@ -248,8 +248,23 @@ void test_imagen_xy()
 	    std::cout << '\n';
 	}
     }
+    {// caso const
+	const img::Imagen& img1 = img0;
+
+	img::const_Imagen_xy imgxy{img1};
+	std::cout << "Imprimimos const_img_xy\n";
+	std::cout << "-----------------------\n";
+	for (int y = 0; y <= imgxy.y_max(); ++y){
+	    for (int x = 0; x <= imgxy.x_max(); ++x)
+		std::cout << imgxy(x,y).r << ' ';
+
+	    std::cout << '\n';
+	}
+    }
 
     {// caso genérico
+	using Point = img::Imagen_xy::Point;
+
 	img::Imagen_xy imgxy{img0, 1, 3};
 	CHECK_TRUE(imgxy.rows()  == 4, "rows");
 	CHECK_TRUE(imgxy.cols()  == 5, "cols");
@@ -264,6 +279,10 @@ void test_imagen_xy()
 	CHECK_TRUE(imgxy(1,1).r == 4, "(1,1)");
 	CHECK_TRUE(imgxy(1,-2).r == 19, "(1,-2)");
 
+	CHECK_TRUE((upper_left_corner(imgxy) == Point{-3,1}), "upper_left_corner");
+	CHECK_TRUE((upper_right_corner(imgxy) == Point{1,1}), "upper_right_corner");
+	CHECK_TRUE((bottom_left_corner(imgxy) == Point{-3,-2}), "bottom_left_corner");
+	CHECK_TRUE((bottom_right_corner(imgxy) == Point{1,-2}), "bottom_right_corner");
 
 	std::cout << "\nCambiamos el origen\n";
 	imgxy.origen_de_coordenadas(1,2);
