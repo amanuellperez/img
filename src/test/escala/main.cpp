@@ -22,16 +22,14 @@
 
 #include <iostream>
 
-using namespace img;
-using namespace alp;
 
 void test_escala()
 {
     test::interfaz("escala");
 
-    Imagen img0 = img::read("../prueba.jpg");
+    img::Imagen img0 = img::read("../prueba.jpg");
     
-    Imagen img1 = img::escala(img0, 400, 300);
+    img::Imagen img1 = img::escala(img0, 400, 300);
 
     img::write(img1, "res.jpg");
 }

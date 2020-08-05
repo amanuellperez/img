@@ -21,16 +21,13 @@
 #include <iostream>
 #include <alp_test.h>
 
-using namespace img;
-using namespace test;
-using namespace std;
 
 template <typename Img>
 void test_imagen_funciones_const(Img& img1)
 {
     for (int i = 0; i < img1.rows(); ++i){
 	for (int j = 0; j < img1.cols(); ++j)
-            CHECK_TRUE((img1(i, j) == ColorRGB{i, j, i + j}), "operator(i,j)");
+            CHECK_TRUE((img1(i, j) == img::ColorRGB{i, j, i + j}), "operator(i,j)");
     }
 
     {
@@ -49,15 +46,15 @@ void test_imagen_funciones_const(Img& img1)
     {
 	// for-range ¿compila?
 	for (auto c: img1)
-	    cout << c.r << ' ';
-	cout << '\n';
+	    std::cout << c.r << ' ';
+	std::cout << '\n';
     }
 
     {// iteramos por filas
 	int i = 0, j = 0;
 	for (auto f = img1.row_begin(); f != img1.row_end(); ++f, ++i, j = 0){
 	    for (auto p = f->begin(); p != f->end(); ++p, ++j){
-            CHECK_TRUE((*p == ColorRGB{i, j, i + j}), "begin/end/operator*");
+            CHECK_TRUE((*p == img::ColorRGB{i, j, i + j}), "begin/end/operator*");
 	    }
 	}
     }
@@ -68,7 +65,7 @@ void test_imagen_funciones_const(Img& img1)
 void test_img()
 {
     constexpr int num_rows = 3, num_cols = 4;
-    Imagen img1{num_rows, num_cols};
+    img::Imagen img1{num_rows, num_cols};
 
     CHECK_TRUE(img1.rows() == num_rows, "rows()");
     CHECK_TRUE(img1.cols() == num_cols, "cols()");
@@ -76,23 +73,23 @@ void test_img()
 
     for (int i = 0; i < img1.rows(); ++i)
 	for (int j = 0; j < img1.cols(); ++j)
-	    img1(i,j) = ColorRGB{i, j, i + j};
+	    img1(i,j) = img::ColorRGB{i, j, i + j};
 
-    test_imagen_funciones_const<Imagen>(img1);
-    test_imagen_funciones_const<const Imagen>(img1);
+    test_imagen_funciones_const<img::Imagen>(img1);
+    test_imagen_funciones_const<const img::Imagen>(img1);
 
     {// row_cbegin
 	int i = 0, j = 0;
 	for (auto f = img1.row_cbegin(); f != img1.row_cend(); ++f, ++i, j = 0){
 	    for (auto p = f->begin(); p != f->end(); ++p, ++j){
-            CHECK_TRUE((*p == ColorRGB{i, j, i + j}), "row_cbegin/cend");
+            CHECK_TRUE((*p == img::ColorRGB{i, j, i + j}), "row_cbegin/cend");
 	    }
 	}
     }
 
     {
-	const Imagen img2 = img1;
-	check_equal_containers(img1.begin(), img1.end()
+	const img::Imagen img2 = img1;
+	CHECK_EQUAL_CONTAINERS(img1.begin(), img1.end()
 				, img2.begin(), img2.end()
 				, "operator=");
     }
@@ -101,16 +98,16 @@ void test_img()
     // probamos que funcionen algoritmos STL
     // -------------------------------------
     {
-	ColorRGB color{10, 20, 30};
+	img::ColorRGB color{10, 20, 30};
 
-	Imagen img0{4, 3};
+	img::Imagen img0{4, 3};
 	std::fill(img0.begin(), img0.end(), color);
 
 	for (const auto& c: img0)
 	    CHECK_TRUE(c == color, "std::fill()");
 
 	// probamos ranges-for
-	ColorRGB color2{50, 100, 150};
+	img::ColorRGB color2{50, 100, 150};
 	for (auto& c: img0)
 	    c = color2;
 
@@ -118,15 +115,15 @@ void test_img()
 	    CHECK_TRUE(c == color2, "ranges-for");
     }
     {
-	Imagen img0{2,2};
-	img0(0,0) = ColorRGB{1, 2, 3}; img0(0,1) = ColorRGB{4, 5, 6}; 
-	img0(1,0) = ColorRGB{7, 8, 9}; img0(1,1) = ColorRGB{10, 11, 12}; 
+	img::Imagen img0{2,2};
+	img0(0,0) = img::ColorRGB{1, 2, 3}; img0(0,1) = img::ColorRGB{4, 5, 6}; 
+	img0(1,0) = img::ColorRGB{7, 8, 9}; img0(1,1) = img::ColorRGB{10, 11, 12}; 
 
-	Imagen img1{img0.size2D()};
+	img::Imagen img1{img0.size2D()};
 
 	std::copy(img0.begin(), img0.end(), img1.begin());
 
-	check_equal_containers(img0.begin(), img0.end()
+	CHECK_EQUAL_CONTAINERS(img0.begin(), img0.end()
 			     , img1.begin(), img1.end()
 			     , "std::copy()");
 

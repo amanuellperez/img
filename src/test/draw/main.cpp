@@ -22,30 +22,27 @@
 
 #include <iostream>
 
-using namespace img;
-using namespace alp;
-using namespace test;
 
 void test_draw()
 {
     test::interfaz("draw");
     
     {
-	Imagen img0 = imagen_monocolor(3, 4, ColorRGB::rojo());
+	img::Imagen img0 = img::imagen_monocolor(3, 4, img::ColorRGB::rojo());
     
 	CHECK_TRUE((img0.rows() == 3 and img0.cols() == 4), "img_monocolor(size)");
 
 	for (const auto& c: img0)
-	    CHECK_TRUE(c == ColorRGB::rojo(), "img_monocolor()");
+	    CHECK_TRUE(c == img::ColorRGB::rojo(), "img_monocolor()");
     }
 
     {
-	Imagen img0 = imagen_monocolor(img::Size2D{3, 4}, ColorRGB::rojo());
+	img::Imagen img0 = img::imagen_monocolor(img::Size2D{3, 4}, img::ColorRGB::rojo());
     
 	CHECK_TRUE((img0.rows() == 3 and img0.cols() == 4), "img_monocolor(size)");
 
 	for (const auto& c: img0)
-	    CHECK_TRUE(c == ColorRGB::rojo(), "img_monocolor()");
+	    CHECK_TRUE(c == img::ColorRGB::rojo(), "img_monocolor()");
     }
     
 

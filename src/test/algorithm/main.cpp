@@ -21,45 +21,41 @@
 #include <alp_test.h>
 #include <iostream>
 
-using namespace test;
-using namespace img;
-
-using namespace std;
 
 void test_alg()
 {
     test::interfaz("algorithm");
 
-    Imagen img0{2,2};
-    img0(0,0) = ColorRGB{1,1,1};
-    img0(0,1) = ColorRGB{2,2,2};
-    img0(1,0) = ColorRGB{3,3,3};
-    img0(1,1) = ColorRGB{4,4,4};
+    img::Imagen img0{2,2};
+    img0(0,0) = img::ColorRGB{1,1,1};
+    img0(0,1) = img::ColorRGB{2,2,2};
+    img0(1,0) = img::ColorRGB{3,3,3};
+    img0(1,1) = img::ColorRGB{4,4,4};
 
     int a = 3;
     auto img1 = expande(img0, a);
     CHECK_TRUE((img1.rows() == a*img0.rows()
 		and img1.cols() == a*img0.cols()), "expande.size()");
 
-    Imagen res{3, 3};
+    img::Imagen res{3, 3};
     std::fill(res.begin(), res.end(), img0(0,0));
-    Subimagen sb{img1, Posicion{0,0}, Size2D{3,3}};
-    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+    img::Subimagen sb{img1, img::Posicion{0,0}, img::Size2D{3,3}};
+    CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
     std::fill(res.begin(), res.end(), img0(0,1));
-    sb.extension(Posicion{0,3}, Size2D{3,3});
-    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+    sb.extension(img::Posicion{0,3}, img::Size2D{3,3});
+    CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
     std::fill(res.begin(), res.end(), img0(1,0));
-    sb.extension(Posicion{3,0}, Size2D{3,3});
-    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+    sb.extension(img::Posicion{3,0}, img::Size2D{3,3});
+    CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
     std::fill(res.begin(), res.end(), img0(1,1));
-    sb.extension(Posicion{3,3}, Size2D{3,3});
-    check_equal_containers(sb.begin(), sb.end(), res.begin(), res.end()
+    sb.extension(img::Posicion{3,3}, img::Size2D{3,3});
+    CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
 }
@@ -71,7 +67,7 @@ void test_rotate(const alp::Degree& angle, const std::string& img_name)
 
     img::Imagen img0 = img::read(img_name);
 
-    auto img1 = rotate(img0, angle);
+    auto img1 = img::rotate(img0, angle);
 
     img::write(img1, alp::as_str() << "rotate" << angle.value() << ".jpg");
 }
@@ -87,16 +83,16 @@ void test_rotate()
 	std::cout << img::_rotate_dimensions(img0, alp::Degree{0}) << '\n';
 
         CHECK_TRUE(
-            (img::_rotate_dimensions(img0, alp::Degree{0}) == Size2D{5, 10}),
+            (img::_rotate_dimensions(img0, alp::Degree{0}) == img::Size2D{5, 10}),
             "rotate(0)");
         CHECK_TRUE(
-            (img::_rotate_dimensions(img0, alp::Degree{90}) == Size2D{10, 5}),
+            (img::_rotate_dimensions(img0, alp::Degree{90}) == img::Size2D{10, 5}),
             "rotate(90)");
         CHECK_TRUE(
-            (img::_rotate_dimensions(img0, alp::Degree{180}) == Size2D{5, 10}),
+            (img::_rotate_dimensions(img0, alp::Degree{180}) == img::Size2D{5, 10}),
             "rotate(180)");
         CHECK_TRUE(
-            (img::_rotate_dimensions(img0, alp::Degree{270}) == Size2D{10, 5}),
+            (img::_rotate_dimensions(img0, alp::Degree{270}) == img::Size2D{10, 5}),
             "rotate(270)");
     }
 
@@ -133,7 +129,8 @@ int main()
 try{
     test::header("img_alg.h");
     test_alg();
-    test_rotate();
+    std::cout << "\n\nSi quieres probar rotate tienes que descomentarlo!!!\n\n";
+    // test_rotate();
     test_refence_frame_rotation();
 
 }catch(const std::exception& e){

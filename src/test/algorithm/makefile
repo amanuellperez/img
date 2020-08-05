@@ -7,4 +7,7 @@ SOURCES=main.cpp \
 
 BIN = xx
 
+limpia: 
+	rm -rf rotate*.jpg
+
 include $(IMG_COMPRULES)
