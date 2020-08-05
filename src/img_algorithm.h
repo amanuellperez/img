@@ -49,12 +49,6 @@ namespace img{
 Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle);
 
 /// Rota la imagen img0 `angle` grados.
-// Tiene el problema de que por culpa de los redondeos la imagen rotada tiene
-// "agujeros". 
-// 1.- Revisar que realmente los agujeros sean por culpa del redondeo y no un
-// error de programa.
-// 2.- ¿Cómo corregirlo? Parece sencillo crear un filtro que rellene los
-// agujeros.
 Imagen rotate(const Imagen& img0, alp::Degree angle);
 
 /// Rota la imagen +90 grados.

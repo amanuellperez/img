@@ -67,15 +67,16 @@ Imagen rotate(const Imagen& img0, alp::Degree angle)
     Imagen_xy v1{y};
     v1.origen_de_coordenadas_en_el_centro();
 
-    Reference_frame_rotation rota{angle};
+    Reference_frame_rotation rota{-angle};
 
-    for (int x = v0.x_min(); x <= v0.x_max(); ++x){
-	for (int y = v0.y_min(); y <= v0.y_max(); ++y){
-	    auto [X, Y] = rota(x, y);
+    for (int X = v1.x_min(); X <= v1.x_max(); ++X){
+	for (int Y = v1.y_min(); Y <= v1.y_max(); ++Y){
+	    auto [x, y] = rota(X, Y);
 
-	    if (v1.x_min() <= X and X <= v1.x_max()
+	    // if (point(x,y).belongs_to(v0)):
+	    if (v0.x_min() <= x and x <= v0.x_max()
 			    and
-		v1.y_min() <= Y and Y <= v1.y_max()) {
+		v0.y_min() <= y and y <= v0.y_max()) {
 		v1(X,Y) = v0(x,y);
 	    }
 	}
@@ -85,6 +86,39 @@ Imagen rotate(const Imagen& img0, alp::Degree angle)
     return y;
 
 }
+
+
+// Esta es la primera versión de rotate: tiene el problema de que la imagen
+// rotada tiene "agujeros", un montón de puntos negros.
+//Imagen rotate(const Imagen& img0, alp::Degree angle)
+//{
+//    angle = alp::normalize(angle);
+//
+//    const_Imagen_xy v0{img0}; // v0 = view0
+//    v0.origen_de_coordenadas_en_el_centro();
+//
+//    auto y = img::imagen_negra(_rotate_dimensions(img0, angle));
+//    Imagen_xy v1{y};
+//    v1.origen_de_coordenadas_en_el_centro();
+//
+//    Reference_frame_rotation rota{angle};
+//
+//    for (int x = v0.x_min(); x <= v0.x_max(); ++x){
+//	for (int y = v0.y_min(); y <= v0.y_max(); ++y){
+//	    auto [X, Y] = rota(x, y);
+//
+//	    if (v1.x_min() <= X and X <= v1.x_max()
+//			    and
+//		v1.y_min() <= Y and Y <= v1.y_max()) {
+//		v1(X,Y) = v0(x,y);
+//	    }
+//	}
+//    }
+//
+//
+//    return y;
+//
+//}
 
 
 

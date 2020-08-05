@@ -100,7 +100,7 @@ void test_rotate()
             "rotate(270)");
     }
 
-    for (int th = 10; th < 360; th += 10)
+    for (int th = 5; th < 360; th += 5)
 	test_rotate(th, "prueba.jpg");
 }
 
