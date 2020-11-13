@@ -201,47 +201,49 @@ inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
 
 
 
-/*!
- *  \brief  Devuelve los puntos de la imagen que se encuentran alrededor de p.
- *
- *  Ejemplo:
- *  \code
- *		for(auto p: alrededor(img0, {3,4})) ...
- *  \endcode
- *
- */
-template <typename ContBi>
-// requires: Contenedor_bidimensional(ContBi)
-inline std::vector<Posicion> alrededor(const ContBi& c, Posicion p)
-{
-    std::vector<Posicion> v;
-    v.reserve(8);
-   
-    // (i1, j1) valores máximos de los índices
-    auto i1 = c.rows()-1; auto  j1 = c.cols() - 1;
-    auto i = p.i; auto j = p.j;
-
-    if(i-1 >= 0){
-	if(j-1 >= 0)	v.push_back(Posicion{i-1, j-1});
-	v.push_back(Posicion{i-1, j});
-	if(j+1 <= j1)	v.push_back(Posicion{i-1, j+1});
-    }
-
-    // i
-    if(j-1 >= 0)    v.push_back(Posicion{i, j-1});
-//		    v.push_back(Posicion{i, j}); <--- este no está alrededor!
-    if(j+1 <= j1)   v.push_back(Posicion{i, j+1});
-
-
-    if(i+1 <= i1){
-	if(j-1 >= 0)	v.push_back(Posicion{i+1, j-1});
-	v.push_back(Posicion{i+1, j});
-	if(j+1 <= j1)	v.push_back(Posicion{i+1, j+1});
-    }
-
-    return v;
-}
-
+// BORRAME: alrededor lo migro a alp_matrix. Es genérico.
+///*!
+// *  \brief  Devuelve los puntos de la imagen que se encuentran alrededor de p.
+// *
+// *  Ejemplo:
+// *  \code
+// *		for(auto p: alrededor(img0, {3,4})) ...
+// *  \endcode
+// *
+// */
+//template <typename Matriz>
+//std::vector<Posicion> alrededor(const Matriz& c, typename Matriz::Posicion& p)
+//{
+//    using Posicion = typename Matriz::Posicion;
+//
+//    std::vector<Posicion> v;
+//    v.reserve(8);
+//   
+//    // (i1, j1) valores máximos de los índices
+//    auto i1 = c.rows()-1; auto  j1 = c.cols() - 1;
+//    auto i = p.i; auto j = p.j;
+//
+//    if(i-1 >= 0){
+//	if(j-1 >= 0)	v.push_back(Posicion{i-1, j-1});
+//	v.push_back(Posicion{i-1, j});
+//	if(j+1 <= j1)	v.push_back(Posicion{i-1, j+1});
+//    }
+//
+//    // i
+//    if(j-1 >= 0)    v.push_back(Posicion{i, j-1});
+////		    v.push_back(Posicion{i, j}); <--- este no está alrededor!
+//    if(j+1 <= j1)   v.push_back(Posicion{i, j+1});
+//
+//
+//    if(i+1 <= i1){
+//	if(j-1 >= 0)	v.push_back(Posicion{i+1, j-1});
+//	v.push_back(Posicion{i+1, j});
+//	if(j+1 <= j1)	v.push_back(Posicion{i+1, j+1});
+//    }
+//
+//    return v;
+//}
+//
 
 
 /***************************************************************************
