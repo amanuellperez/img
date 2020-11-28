@@ -71,7 +71,7 @@ inline bool pertenece(Posicion p, const Imagen& img)
 // ---------------
 /// Devuelve la posición que ocupa el centro de la imagen
 inline Posicion posicion_del_centro(const Imagen& img)
-{ return alp::posicion_del_centro(img); }
+{ return alp::posicion_del_centro(img.extension()); }
 
 
 // Lectura/escritura
