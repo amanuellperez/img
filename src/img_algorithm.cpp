@@ -34,9 +34,9 @@ namespace img
 
 Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle)
 {
-    using Vector= const_Imagen_xy::Vector;
+    using Vector= const_Imagen_xy<1,1>::Vector;
 
-    const_Imagen_xy img_xy{img0};
+    const_Imagen_xy<1,1> img_xy{img0};
 
     img_xy.origen_de_coordenadas_en_el_centro();
 
@@ -61,11 +61,11 @@ Imagen rotate(const Imagen& img0, alp::Degree angle)
 {
     angle = alp::normalize(angle);
 
-    const_Imagen_xy v0{img0}; // v0 = view0
+    const_Imagen_xy<1,1> v0{img0}; // v0 = view0
     v0.origen_de_coordenadas_en_el_centro();
 
     auto y = img::imagen_negra(_rotate_dimensions(img0, angle));
-    Imagen_xy v1{y};
+    Imagen_xy<1,1> v1{y};
     v1.origen_de_coordenadas_en_el_centro();
 
     Reference_frame_rotation rota{-angle};
@@ -95,11 +95,11 @@ Imagen rotate(const Imagen& img0, alp::Degree angle)
 //{
 //    angle = alp::normalize(angle);
 //
-//    const_Imagen_xy v0{img0}; // v0 = view0
+//    const_Imagen_xy<1,1> v0{img0}; // v0 = view0
 //    v0.origen_de_coordenadas_en_el_centro();
 //
 //    auto y = img::imagen_negra(_rotate_dimensions(img0, angle));
-//    Imagen_xy v1{y};
+//    Imagen_xy<1,1> v1{y};
 //    v1.origen_de_coordenadas_en_el_centro();
 //
 //    Reference_frame_rotation rota{angle};

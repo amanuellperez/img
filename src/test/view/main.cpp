@@ -17,6 +17,7 @@
 
 
 #include "../../img_view.h"
+#include "../../img_algorithm.h"
 #include "../../img_draw.h"
 
 #include <iostream>
@@ -238,7 +239,7 @@ void test_imagen_xy()
     alp::print(std::cout, img0);
 
     {
-	img::Imagen_xy imgxy{img0};
+	img::Imagen_xy<1,1> imgxy{img0};
 	std::cout << "Imprimimos img_xy\n";
 	std::cout << "-----------------\n";
 	for (int y = 0; y <= imgxy.y_max(); ++y){
@@ -251,7 +252,7 @@ void test_imagen_xy()
     {// caso const
 	const img::Imagen& img1 = img0;
 
-	img::const_Imagen_xy imgxy{img1};
+	img::const_Imagen_xy<1,1> imgxy{img1};
 	std::cout << "Imprimimos const_img_xy\n";
 	std::cout << "-----------------------\n";
 	for (int y = 0; y <= imgxy.y_max(); ++y){
@@ -263,9 +264,9 @@ void test_imagen_xy()
     }
 
     {// caso genérico
-	using Point = img::Imagen_xy::Point;
+	using Point = img::Imagen_xy<1,1>::Point;
 
-	img::Imagen_xy imgxy{img0, 1, 3};
+	img::Imagen_xy<1,1> imgxy{img0, 1, 3};
 	CHECK_TRUE(imgxy.rows()  == 4, "rows");
 	CHECK_TRUE(imgxy.cols()  == 5, "cols");
 	CHECK_TRUE(imgxy.x_min() == -3, "x_min");

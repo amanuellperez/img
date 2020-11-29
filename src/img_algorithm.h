@@ -278,6 +278,30 @@ diferencias_x_E(const Img& img0)
 }
 
 
+// Corners
+// -------
+// ¿Qué sentido tienen las esquinas en un sistema cualquiera de referencia?
+// Si el eje y va hacia abajo es un lio esto. ¿O dejamos un sistema de
+// referencia humano siempre?
+template <typename It>
+inline alp::Matrix_xy_base<It,1,1>::Point
+upper_left_corner(const alp::Matrix_xy_base<It, +1, +1>& img0)
+{ return {img0.x_min(), img0.y_max()};}
+
+template <typename It>
+inline alp::Matrix_xy_base<It,1,1>::Point
+upper_right_corner(const alp::Matrix_xy_base<It,1,1>& img0)
+{ return {img0.x_max(), img0.y_max()};}
+
+template <typename It>
+inline alp::Matrix_xy_base<It,1,1>::Point
+bottom_left_corner(const alp::Matrix_xy_base<It,1,1>& img0)
+{ return {img0.x_min(), img0.y_min()};}
+
+template <typename It>
+inline alp::Matrix_xy_base<It,1,1>::Point
+bottom_right_corner(const alp::Matrix_xy_base<It,1,1>& img0)
+{ return {img0.x_max(), img0.y_min()};}
 
 
 }// namespace img

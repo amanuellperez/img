@@ -127,24 +127,24 @@ inline It colorea(const It& p0, int n, int c)
 
 
 /***************************************************************************
- *		    FUNCIONES DE DIBUJO PARA Imagen_xy
+ *		    FUNCIONES DE DIBUJO PARA Imagen_xy<1,1>
  ***************************************************************************/
 /// Dibuja el eje x en la posición y de la imagen
-inline void draw_eje_x(Imagen_xy& img_xy, Imagen_xy::Ind y, const ColorRGB& c)
-{ draw_eje_x(img_xy.img(), img_xy.i(y), c);}
+inline void draw_eje_x(Imagen_xy<1,1>& img_xy, Imagen_xy<1,1>::Ind y, const ColorRGB& c)
+{ draw_eje_x(img_xy.matrix(), img_xy.i(y), c);}
 
 /// Dibuja el eje y en la posición x de la imagen
-inline void draw_eje_y(Imagen_xy& img_xy, Imagen_xy::Ind x, const ColorRGB& c)
-{ draw_eje_y(img_xy.img(), img_xy.j(x), c);}
+inline void draw_eje_y(Imagen_xy<1,1>& img_xy, Imagen_xy<1,1>::Ind x, const ColorRGB& c)
+{ draw_eje_y(img_xy.matrix(), img_xy.j(x), c);}
 
 /// Dibuja el segmento s en la imagen img del color indicado
-// ¿merece la pena definir draw(Imagen_xy::Segmento)??? De momento creo que
-// no, por eso lo defino así. Ahora bien, si se usa mucho Imagen_xy acabar por
+// ¿merece la pena definir draw(Imagen_xy<1,1>::Segmento)??? De momento creo que
+// no, por eso lo defino así. Ahora bien, si se usa mucho Imagen_xy<1,1> acabar por
 // definir todas las funciones de dibujo para esta máscara.
-inline void draw_segmento(Imagen_xy& img_xy
-			, const Imagen_xy::Point& A
-			, const Imagen_xy::Point& B, const ColorRGB& c)
-{ draw(img_xy.img(), Segmento{img_xy.posicion(A), img_xy.posicion(B)}, c);}
+inline void draw_segmento(Imagen_xy<1,1>& img_xy
+			, const Imagen_xy<1,1>::Point& A
+			, const Imagen_xy<1,1>::Point& B, const ColorRGB& c)
+{ draw(img_xy.matrix(), Segmento{img_xy.posicion(A), img_xy.posicion(B)}, c);}
 
 
 /***************************************************************************

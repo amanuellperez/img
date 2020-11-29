@@ -168,9 +168,14 @@ inline auto const_imagen_blue(Container2D& img1)
 /***************************************************************************
  *				Imagen_xy
  ***************************************************************************/
-using Imagen_xy = alp::Matrix_xy<Imagen::value_type, Imagen::Ind>;
-using const_Imagen_xy = alp::const_Matrix_xy<Imagen::value_type, Imagen::Ind>;
+// TODO: no funciona la deducción automática con el using!!!
+template <int x_sign = +1, int y_sign = +1>
+using Imagen_xy =
+    alp::Matrix_xy<Imagen::value_type, Imagen::Ind, x_sign, y_sign>;
 
+template <int x_sign = +1, int y_sign = +1>
+using const_Imagen_xy =
+    alp::const_Matrix_xy<Imagen::value_type, Imagen::Ind, x_sign, y_sign>;
 
 /***************************************************************************
  *				Imagen_rt
@@ -184,6 +189,7 @@ using const_Imagen_xy = alp::const_Matrix_xy<Imagen::value_type, Imagen::Ind>;
  */
 class Imagen_rt{
 public:
+    using Imagen_xy = img::Imagen_xy<1,1>;
     // Tipos
     using Ind	= double;	// voy a permitir pasar decimales
     using Radio = double;
