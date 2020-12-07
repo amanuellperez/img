@@ -35,12 +35,16 @@
  *	           es un paquete genérico que no sabe de VISAR.
  *	28/05/2020 Aproximado
  *	31/05/2020 Redefino intensidad.
+ *	07/12/2020 std::numeric_limits<Color>
  *
  ****************************************************************************/
 
 #include <limits>
 #include <alp_iterator.h>
 #include <alp_math.h>
+#include <limits>
+
+
 
 namespace img{
 // TODO: definir un tipo Color. Es un tipo numérico.
@@ -50,15 +54,23 @@ public:
     // tipos de colores (añadir: intensidad, value, hue y saturate?)
     enum Tipo{red, green, blue};
 
-    static constexpr const int min = 0;
-    static constexpr const int max = 255;
+};
+} // namespace img
 
-    /// Número total de colores que usamos.
+
+template<>
+struct std::numeric_limits<img::Color>{
+    static constexpr int min() noexcept {return 0;}
+    static constexpr int max() noexcept {return 255;}
+
     static constexpr const int num_colores = 256;
 };
 
+
+namespace img{
 inline bool es_color(int c)
-{ return (alp::esta_entre(c, Color::min, Color::max)); }
+{ return (alp::esta_entre(c, std::numeric_limits<img::Color>::min(), 
+			     std::numeric_limits<img::Color>::max())); }
 
 
 /*****************************************************************************
@@ -216,7 +228,8 @@ inline bool son_discontinuos(const ColorRGB& c1, const ColorRGB& c2)
 inline bool son_distintos_t(const ColorRGB& c1, const ColorRGB& c2)
 {return c1.r != c2.r and c1.g != c2.g and c1.b != c2.b;}
 
-inline int intensidad(const ColorRGB& c) {return (c.r +c.g +c.b)/3;}
+inline constexpr int intensidad(const ColorRGB& c) {return (c.r +c.g +c.b)/3;}
+inline constexpr int intensidad_max() {return intensidad(ColorRGB{255,255,255});}
 
 
 /// Escribimos un color en formato txt
