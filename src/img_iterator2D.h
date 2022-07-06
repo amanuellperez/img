@@ -30,7 +30,7 @@
  *           alp  - 26/08/2017 Escrito
  *
  ****************************************************************************/
-#include "img_imagen.h"
+#include "img_image.h"
 
 namespace img{
 /*!
@@ -93,7 +93,7 @@ public:
   /// Devuelve el tipo de la dirección
   Direccion direccion() const { return direccion_; }
 
-  // Sería mejor devolver Posicion, pero todavía tengo el lío con las
+  // Sería mejor devolver Position, pero todavía tengo el lío con las
   // coordenadas: (i,j)??? (x,y)??? 
   int x() const {return x_;}
   int y() const {return y_;}
@@ -205,9 +205,9 @@ inline std::ostream& operator<<(std::ostream& out, const Direccion& d)
  *
  *  Ejemplo:
  *  \code
- *	Imagen img;
+ *	Image img;
  *	...
- *	Iterator2D p{img, Posicion{10,20}};
+ *	Iterator2D p{img, Position{10,20}};
  *
  *	while (!p.esta_fuera()){
  *	    ++p;    // = p.a_la_dcha();
@@ -239,7 +239,7 @@ public:
 
     /// Define el iterador 2D, colocándolo en la posición 'p' sobre la imagen
     /// img0.
-    Iterator2D_t(Img& img0, Posicion p = {0,0})
+    Iterator2D_t(Img& img0, Position p = {0,0})
 	:img_{&img0}, p_{p} {}
 
     Iterator2D_t& operator++() {return dcha();}
@@ -274,7 +274,7 @@ public:
 
 
     /// Posición que apuntamos en la imagen
-    Posicion posicion() const {return p_;}
+    Position posicion() const {return p_;}
 
 
     Color_t& operator*() const {return (*img_)(p_);}
@@ -304,7 +304,7 @@ public:
 
 private:
     Img* img_;	    // imagen por donde nos movemos
-    Posicion p_;    // posición a la que apuntamos
+    Position p_;    // posición a la que apuntamos
 };
 
 
@@ -324,9 +324,9 @@ bool operator!=(Iterator2D_t<I> a,
 }
 
 
-using Iterator2D = Iterator2D_t<Imagen>;
+using Iterator2D = Iterator2D_t<Image>;
 
-using const_Iterator2D = Iterator2D_t<const Imagen>;
+using const_Iterator2D = Iterator2D_t<const Image>;
 
 
 }// namespace

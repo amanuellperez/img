@@ -28,7 +28,7 @@ void test_draw()
     test::interfaz("draw");
     
     {
-	img::Imagen img0 = img::imagen_monocolor(3, 4, img::ColorRGB::rojo());
+	img::Image img0 = img::imagen_monocolor(3, 4, img::ColorRGB::rojo());
     
 	CHECK_TRUE((img0.rows() == 3 and img0.cols() == 4), "img_monocolor(size)");
 
@@ -37,7 +37,7 @@ void test_draw()
     }
 
     {
-	img::Imagen img0 = img::imagen_monocolor(img::Size2D{3, 4}, img::ColorRGB::rojo());
+	img::Image img0 = img::imagen_monocolor(img::Size2D{3, 4}, img::ColorRGB::rojo());
     
 	CHECK_TRUE((img0.rows() == 3 and img0.cols() == 4), "img_monocolor(size)");
 

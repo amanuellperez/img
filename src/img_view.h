@@ -27,8 +27,8 @@
  *  - HISTORIA:
  *    A.Manuel L.Perez
  *	30/12/2017 Escrito
- *	26/07/2020 Cambio interfaz de Imagen_xy. Era raro...
- *	28/11/2020 Migro Imagen_xy a alp.
+ *	26/07/2020 Cambio interfaz de Image_xy. Era raro...
+ *	28/11/2020 Migro Image_xy a alp.
  *
  ****************************************************************************/
 
@@ -41,24 +41,24 @@
 #include <alp_type_traits.h>
 #include <alp_rframe_xy.h>
 
-#include "img_imagen.h"	// Rectangulo
+#include "img_image.h"	// Rectangulo
 #include "img_color.h"	// Color_red...
 
 namespace img{
 /***************************************************************************
  *				SUBIMAGEN
  ***************************************************************************/
-using Subimagen       = alp::Submatrix<Imagen>;
-using const_Subimagen = alp::Submatrix<const Imagen>;
+using Subimage       = alp::Submatrix<Image>;
+using const_Subimage = alp::Submatrix<const Image>;
 
 
 
 // Esta es una copia de la función alp::clone. No puedo usar la de alp ya que
-// usa Matrix y no Imagen (a día de hoy son distintas clases). Si las fusiono
+// usa Matrix y no Image (a día de hoy son distintas clases). Si las fusiono
 // en el futuro sobra esta función.
-inline auto clone(const Subimagen& img0)
+inline auto clone(const Subimage& img0)
 {
-     Imagen res{img0.size2D()};
+     Image res{img0.size2D()};
 
     auto f0 = img0.row_begin();
     auto f1 = res.row_begin();
@@ -70,9 +70,9 @@ inline auto clone(const Subimagen& img0)
 }
 
 
-inline auto clone(const const_Subimagen& img0)
+inline auto clone(const const_Subimage& img0)
 {
-     Imagen res{img0.size2D()};
+     Image res{img0.size2D()};
 
     auto f0 = img0.row_begin();
     auto f1 = res.row_begin();
@@ -87,7 +87,7 @@ inline auto clone(const const_Subimagen& img0)
  *				IMAGEN_VIEW
  ***************************************************************************/
 template <typename It>
-using Imagen_view = alp::Matrix_view<It>;
+using Image_view = alp::Matrix_view<It>;
 
 
 // Hay un problema con los alias de templates: en los alias no funciona la 
@@ -95,7 +95,7 @@ using Imagen_view = alp::Matrix_view<It>;
 //	Matrix_view m{img0, Color_red{}};
 //
 //  no compila
-//	Imagen_view m{img0, Color_red{}};
+//	Image_view m{img0, Color_red{}};
 //
 //  Por eso necesito esta función: (syntactic sugar)
 
@@ -166,44 +166,44 @@ inline auto const_imagen_blue(Container2D& img1)
 
 
 /***************************************************************************
- *				Imagen_xy
+ *				Image_xy
  ***************************************************************************/
 // TODO: no funciona la deducción automática con el using!!!
 template <int x_sign = +1, int y_sign = +1>
-using Imagen_xy =
-    alp::Matrix_xy<Imagen::value_type, Imagen::Ind, x_sign, y_sign>;
+using Image_xy =
+    alp::Matrix_xy<Image::value_type, Image::Ind, x_sign, y_sign>;
 
 template <int x_sign = +1, int y_sign = +1>
-using const_Imagen_xy =
-    alp::const_Matrix_xy<Imagen::value_type, Imagen::Ind, x_sign, y_sign>;
+using const_Image_xy =
+    alp::const_Matrix_xy<Image::value_type, Image::Ind, x_sign, y_sign>;
 
 /***************************************************************************
- *				Imagen_rt
+ *				Image_rt
  ***************************************************************************/
 /*!
- *  \brief  Imagen donde las coordenadas las damos en polares (rho, theta)
+ *  \brief  Image donde las coordenadas las damos en polares (rho, theta)
  *
  *  De momento solo voy a dibujar imagenes polares tales que 0 <= r <= r_max
  *  y cualquier theta. Esto es, el origen estará en el centro de la imagen,
  *  correspondiendo al punto r = 0.
  */
-class Imagen_rt{
+class Image_rt{
 public:
-    using Imagen_xy = img::Imagen_xy<1,1>;
+    using Image_xy = img::Image_xy<1,1>;
     // Tipos
     using Ind	= double;	// voy a permitir pasar decimales
     using Radio = double;
     using Angulo= double;
 
-    using Longitud  = Imagen_xy::Ind;
-    using value_type= Imagen_xy::value_type;
+    using Longitud  = Image_xy::Ind;
+    using value_type= Image_xy::value_type;
     using Point	    = alp::Vector_xy<Ind>;
 
-    using Ind_xy = Imagen_xy::Ind;
+    using Ind_xy = Image_xy::Ind;
 
 
     /// Colocamos una máscara sobre la imagen img0
-    Imagen_rt(Imagen& img0)
+    Image_rt(Image& img0)
 	    :img_{img0}
     { img_.origen_de_coordenadas_en_el_centro(); }
 
@@ -213,10 +213,10 @@ public:
 
 
     /// Número de filas
-    Imagen_xy::Ind rows() const {return img_.rows();}
+    Image_xy::Ind rows() const {return img_.rows();}
 
     /// Número de columnas
-    Imagen_xy::Ind cols() const {return img_.cols();}
+    Image_xy::Ind cols() const {return img_.cols();}
 
 
     /// Devuelve el color del pixel (rho, theta)
@@ -234,7 +234,7 @@ public:
     }
 
 private:
-    Imagen_xy img_;
+    Image_xy img_;
 };
 
 

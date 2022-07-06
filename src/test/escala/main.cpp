@@ -27,9 +27,9 @@ void test_escala()
 {
     test::interfaz("escala");
 
-    img::Imagen img0 = img::read("../prueba.jpg");
+    img::Image img0 = img::read("../prueba.jpg");
     
-    img::Imagen img1 = img::escala(img0, 400, 300);
+    img::Image img1 = img::escala(img0, 400, 300);
 
     img::write(img1, "res.jpg");
 }

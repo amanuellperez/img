@@ -24,16 +24,16 @@
  *
  *   - DESCRIPCION: Diferentes grids que podemos poner sobre una imagen.
  *
- *   - CUIDADO: cuidado con devolver en funciones Grid<Grid_d<Imagen>> g.
+ *   - CUIDADO: cuidado con devolver en funciones Grid<Grid_d<Image>> g.
  *	    ¡¡¡No funciona!!!
  *
  *   - COMENTARIOS: 
  *	+ Grid:
  *	  ----
- *	    Grid<Imagen> g{img, m, n};	// divide la imagen en subimagenes de
+ *	    Grid<Image> g{img, m, n};	// divide la imagen en subimagenes de
  *					// tamaño m x n
  *
- *	    const Grid<(const) Imagen> g{img, m, n};
+ *	    const Grid<(const) Image> g{img, m, n};
  *
  *	    auto g = grid(img, m, n);	// crea const (o no) si img es const
  *					// (o no)
@@ -181,7 +181,7 @@ Grid<const ContenedorB> grid(const ContenedorB& c, int m, int n)
  *	Es un grid genérico que le podemos poner a cualquier ContenedorB.
  *
  *   - HACER?:
- *	    Las diferencias entre Subimagen y Grid_d son únicamente las funciones
+ *	    Las diferencias entre Subimage y Grid_d son únicamente las funciones
  *	    de acceso aleatorio, ya que todos los iteradores se implementan a
  *	    partir de estas funciones. Se puede heredar estas dos clases de
  *	    una clase genérica 'Mascara' que incluya estos iteradores.

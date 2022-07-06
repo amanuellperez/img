@@ -16,7 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-#include "../../img_imagen.h"
+#include "../../img_image.h"
 
 #include <iostream>
 #include <alp_test.h>
@@ -65,7 +65,7 @@ void test_imagen_funciones_const(Img& img1)
 void test_img()
 {
     constexpr int num_rows = 3, num_cols = 4;
-    img::Imagen img1{num_rows, num_cols};
+    img::Image img1{num_rows, num_cols};
 
     CHECK_TRUE(img1.rows() == num_rows, "rows()");
     CHECK_TRUE(img1.cols() == num_cols, "cols()");
@@ -75,8 +75,8 @@ void test_img()
 	for (int j = 0; j < img1.cols(); ++j)
 	    img1(i,j) = img::ColorRGB{i, j, i + j};
 
-    test_imagen_funciones_const<img::Imagen>(img1);
-    test_imagen_funciones_const<const img::Imagen>(img1);
+    test_imagen_funciones_const<img::Image>(img1);
+    test_imagen_funciones_const<const img::Image>(img1);
 
     {// row_cbegin
 	int i = 0, j = 0;
@@ -88,7 +88,7 @@ void test_img()
     }
 
     {
-	const img::Imagen img2 = img1;
+	const img::Image img2 = img1;
 	CHECK_EQUAL_CONTAINERS(img1.begin(), img1.end()
 				, img2.begin(), img2.end()
 				, "operator=");
@@ -100,7 +100,7 @@ void test_img()
     {
 	img::ColorRGB color{10, 20, 30};
 
-	img::Imagen img0{4, 3};
+	img::Image img0{4, 3};
 	std::fill(img0.begin(), img0.end(), color);
 
 	for (const auto& c: img0)
@@ -115,11 +115,11 @@ void test_img()
 	    CHECK_TRUE(c == color2, "ranges-for");
     }
     {
-	img::Imagen img0{2,2};
+	img::Image img0{2,2};
 	img0(0,0) = img::ColorRGB{1, 2, 3}; img0(0,1) = img::ColorRGB{4, 5, 6}; 
 	img0(1,0) = img::ColorRGB{7, 8, 9}; img0(1,1) = img::ColorRGB{10, 11, 12}; 
 
-	img::Imagen img1{img0.size2D()};
+	img::Image img1{img0.size2D()};
 
 	std::copy(img0.begin(), img0.end(), img1.begin());
 

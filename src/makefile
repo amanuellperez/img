@@ -6,7 +6,7 @@ SOURCES= img_algorithm.cpp 	\
 	img_iterator2D.cpp
 
 INCS= img.h 			\
-    img_imagen.h		\
+    img_image.h		\
     img_iterator2D.h	\
     img_color.h			\
     img_algorithm.h		\
@@ -14,7 +14,6 @@ INCS= img.h 			\
     img_escala.h 		\
     img_view.h 			\
     img_grid.h 			\
-    img_exp.h 			\
     img_test.h
 
 

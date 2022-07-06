@@ -42,20 +42,18 @@
 #include <alp_exception.h>
 #include <sstream>
 
-#include "img_imagen.h"
+#include "img_image.h"
 
 
-using namespace cimg_library;
-using namespace std;
-using namespace alp;
+namespace cimg = cimg_library;
 
 
 namespace img{
 
-Imagen to_imagen(const cimg_library::CImg<unsigned char>& m)
+Image to_imagen(const cimg::CImg<unsigned char>& m)
 {
-    Imagen img{narrow_cast<Imagen::Ind>(m.height())
-		, narrow_cast<Imagen::Ind>(m.width())};
+    Image img{alp::narrow_cast<Image::Ind>(m.height())
+		, alp::narrow_cast<Image::Ind>(m.width())};
 
     auto p = img.begin();
 
@@ -70,10 +68,10 @@ Imagen to_imagen(const cimg_library::CImg<unsigned char>& m)
 }
 
 // precondition: m solo tiene 1 canal (es blanca/negra)
-static Imagen to_imagen_1canal(const cimg_library::CImg<unsigned char>& m)
+static Image to_imagen_1canal(const cimg::CImg<unsigned char>& m)
 {
-    Imagen img{narrow_cast<Imagen::Ind>(m.height())
-		, narrow_cast<Imagen::Ind>(m.width())};
+    Image img{alp::narrow_cast<Image::Ind>(m.height())
+		, alp::narrow_cast<Image::Ind>(m.width())};
 
     auto p = img.begin();
 
@@ -91,15 +89,15 @@ static Imagen to_imagen_1canal(const cimg_library::CImg<unsigned char>& m)
 
 
 // DEPENDE DE: CImg!!!
-Imagen read(const std::string& name)
+Image read(const std::string& name)
 {
     if (!std::filesystem::is_regular_file(name))
-	throw File_not_found{name};
+	throw alp::File_not_found{name};
 
     std::stringstream error;
 
     try{
-    cimg_library::CImg<unsigned char> img(name.c_str());
+    cimg::CImg<unsigned char> img(name.c_str());
 
     if (img.spectrum() == 3)
 	return to_imagen(img);
@@ -114,29 +112,29 @@ Imagen read(const std::string& name)
 
     }catch(...)
     {
-	throw File_cant_read{name};
+	throw alp::File_cant_read{name};
     }
 
     throw std::runtime_error{error.str()};
 
-    return Imagen{1,1};  // para que no de warning el compilador
+    return Image{1,1};  // para que no de warning el compilador
 }
 
 
-void write(const Imagen& img, const std::string& name)
+void write(const Image& img, const std::string& name)
 {
     // Todas las imagenes que uso son RGB, 3 canales!
-    CImg<unsigned char> m{narrow_cast<unsigned int>(img.cols())
-	    , narrow_cast<unsigned int>(img.rows()), 1, 3};
+    cimg::CImg<unsigned char> m{alp::narrow_cast<unsigned int>(img.cols())
+	    , alp::narrow_cast<unsigned int>(img.rows()), 1, 3};
 
     auto p = img.begin();
 
     for(int y=0 ; y != m.height(); ++y)
 	for(int x = 0; x != m.width(); ++x)
     {
-	*m.data(x,y,0,0) = narrow_cast<unsigned char>((*p).r);
-	*m.data(x,y,0,1) = narrow_cast<unsigned char>((*p).g);
-	*m.data(x,y,0,2) = narrow_cast<unsigned char>((*p).b);
+	*m.data(x,y,0,0) = alp::narrow_cast<unsigned char>((*p).r);
+	*m.data(x,y,0,1) = alp::narrow_cast<unsigned char>((*p).g);
+	*m.data(x,y,0,2) = alp::narrow_cast<unsigned char>((*p).b);
 
 	++p;
     }

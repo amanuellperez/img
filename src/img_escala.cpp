@@ -30,7 +30,7 @@
 
 #include <alp_cast.h>
 
-#include "img_imagen.h"
+#include "img_image.h"
 #include "img_escala.h"
 
 using namespace std;
@@ -38,12 +38,12 @@ using namespace alp;
 
 namespace img{
 
-Imagen Escalador::escala(int ancho, int alto)
+Image Escalador::escala(int ancho, int alto)
 {
     int m0    = img0_->rows();
     int n0    = img0_->cols();
 
-    Imagen imge = img::escala(*img0_, ancho, alto);
+    Image imge = img::escala(*img0_, ancho, alto);
 
     int me = imge.rows();   int ne = imge.cols();
 
@@ -65,7 +65,7 @@ Imagen Escalador::escala(int ancho, int alto)
  *	manteniendo la relación de aspecto
  *
  ****************************************************************************/
-Imagen escala(const Imagen& img0, int v_ancho, int v_alto)
+Image escala(const Image& img0, int v_ancho, int v_alto)
 {
     auto ancho = img0.cols();
     auto alto = img0.rows();
@@ -88,13 +88,13 @@ Imagen escala(const Imagen& img0, int v_ancho, int v_alto)
  *	    de columnas adecuado de la imagen escalada.
  *
  *   - EJEMPLO:
- *		Imagen img0{"01.jpg"};
+ *		Image img0{"01.jpg"};
  *
  *		// escalamos la imagen a 480 filas 
  *		auto img_escalada = escala(img0, Num_filas{480});
  *
  ****************************************************************************/
-Imagen escala(const Imagen& img0, Num_filas nf)
+Image escala(const Image& img0, Num_filas nf)
 {
     if(img0.rows() == nf) return img0;
 
@@ -177,9 +177,9 @@ inline ostream& operator<<(ostream& out, const Indice_y_tamagno& c)
 // Esta función solo la uso en escala. La defino privada a este módulo
 // Inicializa la imagen a cero
 // TODO: usar std::fill
-static Imagen imagen_ceros(Imagen::Ind m, Imagen::Ind n)
+static Image imagen_ceros(Image::Ind m, Image::Ind n)
 {
-    Imagen img{m, n};
+    Image img{m, n};
 
     for(auto& x: img)
 	x = ColorRGB{0,0,0};
@@ -192,7 +192,7 @@ static Imagen imagen_ceros(Imagen::Ind m, Imagen::Ind n)
 // continuamente los Indice_y_tamagno c de las columnas (cada vez que itero
 // por una fila, recalculo todos estos índices y tamaños). Se podría memorizar
 // en un vector al empezar el algoritmo y luego usarlo.
-Imagen reduce(const Imagen& img0, Num_filas nf)
+Image reduce(const Image& img0, Num_filas nf)
 {
     // 1. dimensiones de la imagen
     int m0 = img0.rows();
@@ -211,7 +211,7 @@ Imagen reduce(const Imagen& img0, Num_filas nf)
     int pn1 = N / n1;
 
     // 2. Escalamos
-    Imagen img1 = imagen_ceros(m1, n1);
+    Image img1 = imagen_ceros(m1, n1);
 
     red::Indice_y_tamagno f{pm0, pm1}; // fila
     red::Indice_y_tamagno c{pn0, pn1}; // columna
@@ -346,7 +346,7 @@ inline int Indice_y_tamagno::t(int k) const
 // continuamente los Indice_y_tamagno c de las columnas (cada vez que itero
 // por una fila, recalculo todos estos índices y tamaños). Se podría memorizar
 // en un vector al empezar el algoritmo y luego usarlo.
-Imagen amplia(const Imagen& img0, Num_filas nf)
+Image amplia(const Image& img0, Num_filas nf)
 {
     // 1. dimensiones de la imagen
     int m0 = img0.rows(); int n0 = img0.cols();
@@ -360,7 +360,7 @@ Imagen amplia(const Imagen& img0, Num_filas nf)
     int pm1 = M/m1; int pn1 = N/n1;
 
     // 2. Escalamos
-    Imagen img1 = imagen_ceros(m1, n1);
+    Image img1 = imagen_ceros(m1, n1);
 
     amp::Indice_y_tamagno f{pm0, pm1}; // fila
     amp::Indice_y_tamagno c{pn0, pn1}; // columna
@@ -371,7 +371,7 @@ Imagen amplia(const Imagen& img0, Num_filas nf)
 //	cout << "Fila[" << i0 << "]: " << f << endl;
 	for(int j0 = 0; j0 != n0; ++j0)
 	{
-//	    cout << "\nIndices " << Posicion{i0, j0};
+//	    cout << "\nIndices " << Position{i0, j0};
 //	    cout << "\n-------\n";
 	    c.run(j0);
 //	    cout << "Columna[" << j0 << "]: " << c << endl;
@@ -379,8 +379,8 @@ Imagen amplia(const Imagen& img0, Num_filas nf)
 		for(int kj = 0; kj != c.size(); ++kj){
 		    img1(f.i(ki), c.j(kj)) += f.t(ki)*c.t(kj)*img0(i0, j0);
 		    
-//		    cout << Posicion(f.i(ki), f.j(kj)) 
-//			<< "; " << Posicion(f.t(ki), c.t(kj)) << endl;
+//		    cout << Position(f.i(ki), f.j(kj)) 
+//			<< "; " << Position(f.t(ki), c.t(kj)) << endl;
 		}
 //	    print<Red>(cout, img1);
 //	    cout << "------------------------\n";

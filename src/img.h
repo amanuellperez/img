@@ -39,7 +39,7 @@
 #include "img_color.h"
 
 // Nivel 2
-#include "img_imagen.h"	    // clase Imagen
+#include "img_image.h"	    // clase Imagen
 #include "img_iterator2D.h"   // Iteradores bidimensionales
 #include "img_view.h"   // Máscaras: Region
 //#include "img_grid.h"	    // Máscara: Grid
@@ -52,9 +52,6 @@
 
 // Que facilitan la lectura de código
 
-
-// experimentales
-#include "img_exp.h"	    // experimentales
 
 
 #endif 

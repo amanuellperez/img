@@ -26,7 +26,7 @@ void test_alg()
 {
     test::interfaz("algorithm");
 
-    img::Imagen img0{2,2};
+    img::Image img0{2,2};
     img0(0,0) = img::ColorRGB{1,1,1};
     img0(0,1) = img::ColorRGB{2,2,2};
     img0(1,0) = img::ColorRGB{3,3,3};
@@ -37,24 +37,24 @@ void test_alg()
     CHECK_TRUE((img1.rows() == a*img0.rows()
 		and img1.cols() == a*img0.cols()), "expande.size()");
 
-    img::Imagen res{3, 3};
+    img::Image res{3, 3};
     std::fill(res.begin(), res.end(), img0(0,0));
-    img::Subimagen sb{img1, img::Posicion{0,0}, img::Size2D{3,3}};
+    img::Subimage sb{img1, img::Position{0,0}, img::Size2D{3,3}};
     CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
     std::fill(res.begin(), res.end(), img0(0,1));
-    sb.extension(img::Posicion{0,3}, img::Size2D{3,3});
+    sb.extension(img::Position{0,3}, img::Size2D{3,3});
     CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
     std::fill(res.begin(), res.end(), img0(1,0));
-    sb.extension(img::Posicion{3,0}, img::Size2D{3,3});
+    sb.extension(img::Position{3,0}, img::Size2D{3,3});
     CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
     std::fill(res.begin(), res.end(), img0(1,1));
-    sb.extension(img::Posicion{3,3}, img::Size2D{3,3});
+    sb.extension(img::Position{3,3}, img::Size2D{3,3});
     CHECK_EQUAL_CONTAINERS(sb.begin(), sb.end(), res.begin(), res.end()
 			, "expande()");
 
@@ -65,7 +65,7 @@ void test_rotate(const alp::Degree& angle, const std::string& img_name)
 {
     std::cout << "\n\ntest_rotate(" << angle.value() << ") <-- MIRAR LA IMAGEN RESULTANTE\n";
 
-    img::Imagen img0 = img::read(img_name);
+    img::Image img0 = img::read(img_name);
 
     auto img1 = img::rotate(img0, angle);
 
@@ -79,7 +79,7 @@ void test_rotate()
     test::interfaz("rotate");
 
     {
-	img::Imagen img0{5, 10};
+	img::Image img0{5, 10};
 	std::cout << img::_rotate_dimensions(img0, alp::Degree{0}) << '\n';
 
         CHECK_TRUE(

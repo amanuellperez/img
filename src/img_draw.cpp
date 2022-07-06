@@ -22,10 +22,10 @@
 
 namespace img{
 
-Imagen imagen_monocolor(Imagen::Ind rows, Imagen::Ind cols
+Image imagen_monocolor(Image::Ind rows, Image::Ind cols
 					    , const ColorRGB& color)
 {
-    Imagen img1{rows, cols};
+    Image img1{rows, cols};
 
     std::fill(img1.begin(), img1.end(), color);
 
@@ -47,9 +47,9 @@ Imagen imagen_monocolor(Imagen::Ind rows, Imagen::Ind cols
  *   - OUTPUT: 
  *
  ****************************************************************************/
-void draw(Imagen& img, const Segmento& s, const ColorRGB& color)
+void draw(Image& img, const Segmento& s, const ColorRGB& color)
 {   
-    using Ind = Imagen::Ind;
+    using Ind = Image::Ind;
 
     // Caso degenerado
     //if(es_un_punto(s)){	
@@ -59,7 +59,7 @@ void draw(Imagen& img, const Segmento& s, const ColorRGB& color)
     }
 
     // elegimos los extremos del segmento correctamente ("A < B")
-    Posicion A{0,0}, B{0,0};
+    Position A{0,0}, B{0,0};
     if(s.A.i < s.B.i) { A = s.A; B = s.B; }
     else{
 	if(s.A.i == s.B.i){

@@ -22,16 +22,16 @@
 #define __IMG_TEST_H__
 
 #include <alp_exception.h>
-#include "img_imagen.h"
+#include "img_image.h"
 
 namespace test{
 
 
 /// Crea una nueva imagen de rows x cols a partir de lst. Solo escribe el red.
 template <typename It>
-inline img::Imagen nueva_imagen_red(int rows, int cols, It p0, It pe)
+inline img::Image nueva_imagen_red(int rows, int cols, It p0, It pe)
 {
-    img::Imagen res{rows, cols};
+    img::Image res{rows, cols};
 
 //    auto p0 = lst.begin();
 //    auto pe = lst.end();
@@ -57,7 +57,7 @@ inline img::Imagen nueva_imagen_red(int rows, int cols, It p0, It pe)
 
 
 /// Crea una nueva imagen de rows x cols a partir de lst. Solo escribe el red.
-inline img::Imagen nueva_imagen_red(int rows, int cols, std::initializer_list<int> lst)
+inline img::Image nueva_imagen_red(int rows, int cols, std::initializer_list<int> lst)
 {
     return nueva_imagen_red(rows, cols, lst.begin(), lst.end());
 }
@@ -65,7 +65,7 @@ inline img::Imagen nueva_imagen_red(int rows, int cols, std::initializer_list<in
 
 
 // TODO: meterla en .cpp
-inline img::Imagen lee_img_red(const std::string& nom_fichero)
+inline img::Image lee_img_red(const std::string& nom_fichero)
 {
     std::ifstream in{nom_fichero};
 

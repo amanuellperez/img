@@ -29,8 +29,7 @@
  *
  ****************************************************************************/
 
-// #include <alp_base.h>	// Nombre
-#include "img_imagen.h"
+#include "img_image.h"
 
 namespace img{
 
@@ -57,14 +56,14 @@ using Num_columnas = int;
 
 // escalamos la imagen a las dimensiones n_ancho, n_alto
 // manteniendo la relación de aspecto
-Imagen escala(const Imagen& img0, int n_ancho, int n_alto);
+Image escala(const Image& img0, int n_ancho, int n_alto);
 
 // escala: reduce o amplia la imagen de tal manera que el resultado 
 // tenga nf filas
 //// EJEMPLO: auto img = escala(img0, Num_filas{480});   // img tiene 480 filas
-Imagen escala(const Imagen& img0, Num_filas nf);
-Imagen reduce(const Imagen& img0, Num_filas nf);
-Imagen amplia(const Imagen& img0, Num_filas nf);
+Image escala(const Image& img0, Num_filas nf);
+Image reduce(const Image& img0, Num_filas nf);
+Image amplia(const Image& img0, Num_filas nf);
 
 
 
@@ -72,7 +71,7 @@ Imagen amplia(const Imagen& img0, Num_filas nf);
  * 
  *   - CLASE: Escalador
  *
- *   - DESCRIPCIÓN: Clase temporal, hasta decidir si creo Imagen_escalada
+ *   - DESCRIPCIÓN: Clase temporal, hasta decidir si creo Image_escalada
  *	ó Region_escalada y cómo hacerlo.
  *	En esta clase voy metiendo funciones asociadas a estas clases.
  *
@@ -82,16 +81,16 @@ Imagen amplia(const Imagen& img0, Num_filas nf);
 class Escalador{
 public:
     // OJO: tiene que ser signed!!! Mirar uso que es  = -1!!!!
-    using Ind = Imagen::Ind;
+    using Ind = Image::Ind;
 
 
     Escalador():img0_{nullptr}{}
     
-    Imagen escala(const Imagen& img0, int ancho, int alto)
+    Image escala(const Image& img0, int ancho, int alto)
     {img0_ = &img0; return escala(ancho, alto);}
     
     // Escala la imagen a las dimensiones indicadas
-    Imagen escala(int ancho, int alto);
+    Image escala(int ancho, int alto);
 
 
     // tipos de índices que usamos:
@@ -114,11 +113,11 @@ public:
     Ind j(Ind je) const
     {return ie_to_i(je, pj0_, pje_);};
 
-    Posicion local_escalado_to_local(Posicion p) const
-    {return Posicion{i(p.i), j(p.j)};}
+    Position local_escalado_to_local(Position p) const
+    {return Position{i(p.i), j(p.j)};}
 
 private:
-    const Imagen* img0_;	// podemos enlazar el escalador a otra imagen
+    const Image* img0_;	// podemos enlazar el escalador a otra imagen
 
     int pi0_ = -1, pj0_ = -1;    // número de pixeles que tiene img0 en img_mcm
     int pie_ = -1, pje_ = -1;    // número de pixeles que tiene imge en img_mcm

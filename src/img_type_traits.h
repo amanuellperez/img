@@ -26,11 +26,11 @@
 #include "img_color.h"
 
 // --------------------------
-// Traits de Imagen::iterator
+// Traits de Image::iterator
 // --------------------------
 template<>
 struct std::iterator_traits<img::ColorRGB*>{
-    using difference_type = img::Imagen::difference_type;
+    using difference_type = img::Image::difference_type;
     using value_type      = img::ColorRGB;
     using pointer         = img::ColorRGB*;
     using reference       = img::ColorRGB&;
@@ -40,7 +40,7 @@ struct std::iterator_traits<img::ColorRGB*>{
 
 template<>
 struct std::iterator_traits<const img::ColorRGB*>{
-    using difference_type = img::Imagen::difference_type;
+    using difference_type = img::Image::difference_type;
     using value_type      = img::ColorRGB;
     using pointer         = const img::ColorRGB*;
     using reference       = const img::ColorRGB&;

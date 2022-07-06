@@ -37,45 +37,44 @@
 
 #include <fstream>
 
-#include "img_imagen.h"
+#include "img_image.h"
 #include "img_view.h"
-#include "img_exp.h"
 
 
 
 namespace img{
 
 // Devuelve las dimensiones donde alojar la imagen rotada.
-Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle);
+Size2D _rotate_dimensions(const Image& img0, const alp::Degree& angle);
 
 /// Rota la imagen img0 `angle` grados.
-Imagen rotate(const Imagen& img0, alp::Degree angle);
+Image rotate(const Image& img0, alp::Degree angle);
 
 /// Rota la imagen +90 grados.
 ///
 /// Para rotar una imagen: img0 = rota_mas_90(img0);
-Imagen rota_mas_90(const Imagen& img0);
+Image rota_mas_90(const Image& img0);
 
 /// Rota la imagen -90 grados.
 ///
 /// Para rotar una imagen: img0 = rota_menos_90(img0);
-Imagen rota_menos_90(const Imagen& img0);
+Image rota_menos_90(const Image& img0);
 
 /// Rota la imagen 180 grados.
 ///
 /// Para rotar una imagen: img0 = rota_180(img0);
-Imagen rota_180(const Imagen& img0);
+Image rota_180(const Image& img0);
 
 
 /// Devuelve la imagen simétrica a img0, respecto del eje y
 /// 
 /// Es perfectamente válido: img1 = simetrica_y(img1);
-Imagen simetrica_y(const Imagen& img0);
+Image simetrica_y(const Image& img0);
 
 /// Devuelve la imagen simétrica a img0, respecto del eje x
 /// 
 /// Es perfectamente válido: img1 = simetrica_x(img1);
-Imagen simetrica_x(const Imagen& img0);
+Image simetrica_x(const Image& img0);
 
 
 
@@ -86,14 +85,14 @@ Imagen simetrica_x(const Imagen& img0);
 ///
 /// Observar que es un algoritmo genérico, que opera sobre contenendores
 /// bidimensionales.
-//Imagen muestrea(const Imagen& img0, int /* Distancia */ di
+//Image muestrea(const Image& img0, int /* Distancia */ di
 //				 ,  int /* Distancia */ dj);
 
 /// Expande una imagen, haciéndola más grande. 
 /// Convierte cada pixel en un punto gordo de ancho 'ancho'.
 ///
 /// \todo Esta función está definida en img_escala???
-Imagen expande(const Imagen& img0, int /* Ancho */ ancho);
+Image expande(const Image& img0, int /* Ancho */ ancho);
 
 
 
@@ -122,7 +121,7 @@ private:
 
 
 // TODO: comentar esta (???) Para depurar usar test::print2D ???
-inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
+inline std::ostream& operator<<(std::ostream& out, const Image& img)
 { 
     for(auto f = img.row_begin(); f!= img.row_end(); ++f)
     {
@@ -158,13 +157,13 @@ inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
  ***************************************************************************/
 //class BarridoH{
 //public:
-//    using const_it_contenedor	= Imagen::const_row_iterator;
-//    using Contenedor		= Imagen::const_Row;
+//    using const_it_contenedor	= Image::const_row_iterator;
+//    using Contenedor		= Image::const_Row;
 //    using const_iterator	= Contenedor::const_iterator;
 //
 //
-//    static const_it_contenedor beginC(const Imagen& m) {return m.row_begin();}
-//    static const_it_contenedor endC(const Imagen& m)   {return m.row_end();}
+//    static const_it_contenedor beginC(const Image& m) {return m.row_begin();}
+//    static const_it_contenedor endC(const Image& m)   {return m.row_end();}
 //
 ////    static const_it_contenedor beginC(const_Mascara& m) {return m.row_begin();}
 ////    static const_it_contenedor endC(const_Mascara& m)   {return m.row_end();}
@@ -173,19 +172,19 @@ inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
 //    static const_iterator end(const Contenedor& c) {return c.end();}
 //
 //    // para iterar solo en una parte de una fila
-//    static Contenedor contenedor(const Imagen& img , Posicion p0, Posicion pe)
+//    static Contenedor contenedor(const Image& img , Position p0, Position pe)
 //    {return img.fila(p0.i, p0.j, pe.j);}
 //
 //};
 //
 //class BarridoV{
 //public:
-//    using const_it_contenedor	= Imagen::const_col_iterator;
-//    using Contenedor		= Imagen::const_Columna;
+//    using const_it_contenedor	= Image::const_col_iterator;
+//    using Contenedor		= Image::const_Columna;
 //    using const_iterator	= Contenedor::const_iterator;
 //
-//    static const_it_contenedor beginC(const Imagen& m) {return m.columnaB();}
-//    static const_it_contenedor endC(const Imagen& m)   {return m.columnaE();}
+//    static const_it_contenedor beginC(const Image& m) {return m.columnaB();}
+//    static const_it_contenedor endC(const Image& m)   {return m.columnaE();}
 //
 ////    static const_it_contenedor beginC(const_Mascara& m) {return m.columnaB();}
 ////    static const_it_contenedor endC(const_Mascara& m)   {return m.columnaE();}
@@ -194,7 +193,7 @@ inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
 //    static const_iterator end(const Contenedor& c) {return c.end();}
 //
 //    // para iterar solo en una parte de una columna
-//    static Contenedor contenedor(const Imagen& img , Posicion p0, Posicion pe)
+//    static Contenedor contenedor(const Image& img , Position p0, Position pe)
 //    {return img.columna(p0.j, p0.i, pe.i);}
 //};
 
@@ -211,8 +210,8 @@ inline std::ostream& operator<<(std::ostream& out, const Imagen& img)
  *  Ejemplo:
  *  \code
  *    for (int i = 0; i < img0.rows(); ++i){
- *	for (auto p = diferencias_x_B(Imagen_red{img0}, i);
- *		p != diferencias_x_E(Imagen_red{img0});
+ *	for (auto p = diferencias_x_B(Image_red{img0}, i);
+ *		p != diferencias_x_E(Image_red{img0});
  *		++p)
  *	    cout << *p << ' ';
  *
@@ -225,7 +224,7 @@ template <typename Img>
 // requires: Img es una imagen.
 class It_diferencias_x{
 public:
-    using size_t = Imagen::Ind;
+    using size_t = Image::Ind;
  
     // precondición: img0.cols() >= 1
     It_diferencias_x(const Img& img0, size_t i0, size_t j0)
@@ -244,7 +243,7 @@ public:
     {return a.j1_ == b.j1_;}
 
 
-    friend Posicion posicion(const It_diferencias_x& a)
+    friend Position posicion(const It_diferencias_x& a)
     {return {a.i_, a.j1_};}
 
 private:
@@ -265,7 +264,7 @@ inline bool operator!=(const It_diferencias_x<I>& a, const It_diferencias_x<I>& 
 
 template <typename Img>
 inline It_diferencias_x<Img>
-diferencias_x_B(const Img& img0, Imagen::Ind i0, Imagen::Ind j0 = 0)
+diferencias_x_B(const Img& img0, Image::Ind i0, Image::Ind j0 = 0)
 {
     return It_diferencias_x<Img>{img0, i0, j0};
 }

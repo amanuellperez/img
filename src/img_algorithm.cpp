@@ -32,11 +32,11 @@
 namespace img
 {
 
-Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle)
+Size2D _rotate_dimensions(const Image& img0, const alp::Degree& angle)
 {
-    using Vector= const_Imagen_xy<1,1>::Vector;
+    using Vector= const_Image_xy<1,1>::Vector;
 
-    const_Imagen_xy<1,1> img_xy{img0};
+    const_Image_xy<1,1> img_xy{img0};
 
     img_xy.origen_de_coordenadas_en_el_centro();
 
@@ -57,15 +57,15 @@ Size2D _rotate_dimensions(const Imagen& img0, const alp::Degree& angle)
 
 
 
-Imagen rotate(const Imagen& img0, alp::Degree angle)
+Image rotate(const Image& img0, alp::Degree angle)
 {
     angle = alp::normalize(angle);
 
-    const_Imagen_xy<1,1> v0{img0}; // v0 = view0
+    const_Image_xy<1,1> v0{img0}; // v0 = view0
     v0.origen_de_coordenadas_en_el_centro();
 
     auto y = img::imagen_negra(_rotate_dimensions(img0, angle));
-    Imagen_xy<1,1> v1{y};
+    Image_xy<1,1> v1{y};
     v1.origen_de_coordenadas_en_el_centro();
 
     Reference_frame_rotation rota{-angle};
@@ -91,15 +91,15 @@ Imagen rotate(const Imagen& img0, alp::Degree angle)
 
 // Esta es la primera versión de rotate: tiene el problema de que la imagen
 // rotada tiene "agujeros", un montón de puntos negros.
-//Imagen rotate(const Imagen& img0, alp::Degree angle)
+//Image rotate(const Image& img0, alp::Degree angle)
 //{
 //    angle = alp::normalize(angle);
 //
-//    const_Imagen_xy<1,1> v0{img0}; // v0 = view0
+//    const_Image_xy<1,1> v0{img0}; // v0 = view0
 //    v0.origen_de_coordenadas_en_el_centro();
 //
 //    auto y = img::imagen_negra(_rotate_dimensions(img0, angle));
-//    Imagen_xy<1,1> v1{y};
+//    Image_xy<1,1> v1{y};
 //    v1.origen_de_coordenadas_en_el_centro();
 //
 //    Reference_frame_rotation rota{angle};
@@ -126,11 +126,11 @@ Imagen rotate(const Imagen& img0, alp::Degree angle)
 // Rota la imagen +90 grados.
 //
 // Para rotar una imagen: img0 = rota_mas_90(img0);
-Imagen rota_mas_90(const Imagen& img0)
+Image rota_mas_90(const Image& img0)
 {
-    Imagen res{img0.cols(), img0.rows()};
+    Image res{img0.cols(), img0.rows()};
 
-    using size_t = Imagen::Ind;
+    using size_t = Image::Ind;
     for(size_t I = 0; I < img0.rows(); ++I)
 	for(size_t J = 0, i = res.rows() - 1; J < img0.cols(); ++J, --i)
 	    res(i, I) = img0(I, J);
@@ -143,11 +143,11 @@ Imagen rota_mas_90(const Imagen& img0)
 // Rota la imagen -90 grados.
 //
 // Para rotar una imagen: img0 = rota_menos_90(img0);
-Imagen rota_menos_90(const Imagen& img0)
+Image rota_menos_90(const Image& img0)
 {
-    Imagen res{img0.cols(), img0.rows()};
+    Image res{img0.cols(), img0.rows()};
     
-    using size_t = Imagen::Ind;
+    using size_t = Image::Ind;
     for(size_t I = 0, j = res.cols() - 1; I < img0.rows(); ++I, --j)
 	for(size_t J = 0; J < img0.cols(); ++J)
 	    res(J, j) = img0(I, J);
@@ -160,11 +160,11 @@ Imagen rota_menos_90(const Imagen& img0)
 // Rota la imagen 180 grados.
 //
 // Para rotar una imagen: img0 = rota_180(img0);
-Imagen rota_180(const Imagen& img0)
+Image rota_180(const Image& img0)
 {
-    Imagen res{img0.rows(), img0.cols()};
+    Image res{img0.rows(), img0.cols()};
 
-    using size_t = Imagen::Ind;
+    using size_t = Image::Ind;
     for(size_t I = 0, i = res.rows() - 1; I < img0.rows(); ++I, --i)
 	for(size_t J = 0, j = res.cols() - 1; J < img0.cols(); ++J, --j)
 	    res(i, j) = img0(I, J);
@@ -173,12 +173,12 @@ Imagen rota_180(const Imagen& img0)
 }
 
 // Devuelve la imagen simétrica a img0, respecto del eje y
-Imagen simetrica_y(const Imagen& img0)
+Image simetrica_y(const Image& img0)
 {
-    Imagen res{img0.rows(), img0.cols()};
+    Image res{img0.rows(), img0.cols()};
 
-    for(Imagen::Ind i = 0; i < img0.rows(); ++i)
-	for(Imagen::Ind j = 0, jp = img0.cols()-1
+    for(Image::Ind i = 0; i < img0.rows(); ++i)
+	for(Image::Ind j = 0, jp = img0.cols()-1
 				    ; j < img0.cols(); ++j, --jp)
 	    res(i, jp) = img0(i,j);
 
@@ -187,13 +187,13 @@ Imagen simetrica_y(const Imagen& img0)
 
 
 // Devuelve la imagen simétrica a img0, respecto del eje y
-Imagen simetrica_x(const Imagen& img0)
+Image simetrica_x(const Image& img0)
 {
-    Imagen res{img0.rows(), img0.cols()};
+    Image res{img0.rows(), img0.cols()};
 
-    for(Imagen::Ind i = 0, ip = img0.rows()-1;
+    for(Image::Ind i = 0, ip = img0.rows()-1;
 				    i < img0.rows(); ++i, --ip)
-	for(Imagen::Ind j = 0; j < img0.cols(); ++j)
+	for(Image::Ind j = 0; j < img0.cols(); ++j)
 	    res(ip, j) = img0(i,j);
 
     return res;
@@ -206,7 +206,7 @@ Imagen simetrica_x(const Imagen& img0)
 //
 // Observar que es un algoritmo genérico, que opera sobre contenendores
 // bidimensionales.
-//Imagen muestrea(const Imagen& img0, int /* Distancia no nula */ di
+//Image muestrea(const Image& img0, int /* Distancia no nula */ di
 //				  , int /* Distancia */ dj)
 //{
 //    // precondición
@@ -221,10 +221,10 @@ Imagen simetrica_x(const Imagen& img0)
 //    int /* Num_filas */	    m = num_grupos(img0.rows(), di);
 //    int /* Num_columnas */  n = num_grupos(img0.cols(), dj);
 //
-//    Imagen res{m , n};
+//    Image res{m , n};
 //
-//    for(Imagen::Ind i = 0; i < m; ++i)
-//	for(Imagen::Ind j = 0; j < n; ++j)
+//    for(Image::Ind i = 0; i < m; ++i)
+//	for(Image::Ind j = 0; j < n; ++j)
 //	    res(i, j) = img0(i*di, j*dj);
 //
 //    return res;
@@ -235,15 +235,15 @@ Imagen simetrica_x(const Imagen& img0)
 
 // Expande una imagen, haciéndola más grande. 
 // Convierte cada pixel en un punto gordo de ancho 'a'
-Imagen expande(const Imagen& img0, Imagen::Ind a)
+Image expande(const Image& img0, Image::Ind a)
 {
-    Imagen res{img0.rows()*a, img0.cols()*a};
+    Image res{img0.rows()*a, img0.cols()*a};
 
-    for(Imagen::Ind i = 0; i < img0.rows(); ++i)
-	for(Imagen::Ind j = 0; j < img0.cols(); ++j){
-	    Subimagen sb{res
-			, Posicion{a*i, a*j}
-			, Posicion{a*(i+1)-1, a*(j+1)-1}};
+    for(Image::Ind i = 0; i < img0.rows(); ++i)
+	for(Image::Ind j = 0; j < img0.cols(); ++j){
+	    Subimage sb{res
+			, Position{a*i, a*j}
+			, Position{a*(i+1)-1, a*(j+1)-1}};
 	    std::fill(sb.begin(), sb.end(), img0(i,j));
 	}
 

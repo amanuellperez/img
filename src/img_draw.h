@@ -21,30 +21,30 @@
 #ifndef __IMG_DRAW_H__
 #define __IMG_DRAW_H__
 
-#include "img_imagen.h"
+#include "img_image.h"
 #include "img_view.h"
 
 namespace img{
 
 using Segmento   = alp::Segment_ij<int>;
-//using Rectangulo = alp::Rectangulo<Posicion>;
+//using Rectangulo = alp::Rectangulo<Position>;
 using Rectangulo = alp::Rectangle_ij<int>;
 
 
 /// Crea una imagen de tamaño num_filas x num_cols del color indicado
-Imagen imagen_monocolor(Imagen::Ind num_filas
-		    , Imagen::Ind num_cols, const ColorRGB& color);
+Image imagen_monocolor(Image::Ind num_filas
+		    , Image::Ind num_cols, const ColorRGB& color);
 
 /// Crea una imagen de tamaño sz indicado del color 'color'
-inline Imagen imagen_monocolor(Imagen::Size2D sz, const ColorRGB& color)
+inline Image imagen_monocolor(Image::Size2D sz, const ColorRGB& color)
 {return imagen_monocolor(sz.rows, sz.cols, color);}
 
 /// Crea una imagen de tamaño `rows x cols` totalmente negra
-inline Imagen imagen_negra(Imagen::Ind rows, Imagen::Ind cols)
+inline Image imagen_negra(Image::Ind rows, Image::Ind cols)
 { return imagen_monocolor(rows, cols, ColorRGB::negro());}
 
 /// Crea una imagen de tamaño num_filas x num_cols totalmente negra
-inline Imagen imagen_negra(Imagen::Size2D sz)
+inline Image imagen_negra(Image::Size2D sz)
 {return imagen_negra(sz.rows, sz.cols);}
 
 /****************************************************************************
@@ -54,10 +54,10 @@ inline Imagen imagen_negra(Imagen::Size2D sz)
  *   - DESCRIPCIÓN: Funciones de dibujo
  *
  ****************************************************************************/
-void draw(Imagen& img, const Segmento& s, const ColorRGB& color);
+void draw(Image& img, const Segmento& s, const ColorRGB& color);
 
 
-inline void draw(Imagen& img, const Rectangulo& r, const ColorRGB& color)
+inline void draw(Image& img, const Rectangulo& r, const ColorRGB& color)
 {
     draw(img, Segmento{r.upper_left_corner(), r.upper_right_corner()}, color);
     draw(img, Segmento{r.bottom_left_corner(), r.bottom_right_corner()}, color);
@@ -70,28 +70,28 @@ inline void draw(Imagen& img, const Rectangulo& r, const ColorRGB& color)
 //    draw(img, Segmento{r.SD(), r.ID()}, color);
 }
 
-inline void draw_lineaH(Imagen& img, Imagen::Ind i, const ColorRGB& c)
+inline void draw_lineaH(Image& img, Image::Ind i, const ColorRGB& c)
 { draw(img, Segmento{{i, 0}, {i, img.cols()-1}}, c); }
 
-inline void draw_lineaV(Imagen& img, Imagen::Ind j, const ColorRGB& c)
+inline void draw_lineaV(Image& img, Image::Ind j, const ColorRGB& c)
 { draw(img, Segmento{{0, j}, {img.rows()-1, j}}, c); }
 
 
 // dibuja un eje horizontal que pasa por p
-inline void draw_eje_x(Imagen& img, const Imagen::Posicion& p, const ColorRGB& c)
+inline void draw_eje_x(Image& img, const Image::Position& p, const ColorRGB& c)
 { draw(img, Segmento{{p.i, 0}, {p.i, img.cols()-1}}, c); }
 
-inline void draw_eje_x(Imagen& img, Imagen::Ind i, const ColorRGB& c) 
+inline void draw_eje_x(Image& img, Image::Ind i, const ColorRGB& c) 
 {draw_eje_x(img, {i,0}, c);}
 
 // dibuja un eje vertical que pasa por p
-inline void draw_eje_y(Imagen& img, const Imagen::Posicion& p, const ColorRGB& c)
+inline void draw_eje_y(Image& img, const Image::Position& p, const ColorRGB& c)
 { draw(img, Segmento{{0, p.j}, {img.rows()-1, p.j}}, c); }
 
-inline void draw_eje_y(Imagen& img, Imagen::Ind j, const ColorRGB& c) 
+inline void draw_eje_y(Image& img, Image::Ind j, const ColorRGB& c) 
 {draw_eje_y(img, {0,j}, c);}
 
-inline void draw_ejes(Imagen& img, const Imagen::Posicion& p, const ColorRGB& c)
+inline void draw_ejes(Image& img, const Image::Position& p, const ColorRGB& c)
 {
     draw_eje_x(img, p,c);
     draw_eje_y(img, p,c);
@@ -127,31 +127,31 @@ inline It colorea(const It& p0, int n, int c)
 
 
 /***************************************************************************
- *		    FUNCIONES DE DIBUJO PARA Imagen_xy<1,1>
+ *		    FUNCIONES DE DIBUJO PARA Image_xy<1,1>
  ***************************************************************************/
 /// Dibuja el eje x en la posición y de la imagen
-inline void draw_eje_x(Imagen_xy<1,1>& img_xy, Imagen_xy<1,1>::Ind y, const ColorRGB& c)
+inline void draw_eje_x(Image_xy<1,1>& img_xy, Image_xy<1,1>::Ind y, const ColorRGB& c)
 { draw_eje_x(img_xy.matrix(), img_xy.i(y), c);}
 
 /// Dibuja el eje y en la posición x de la imagen
-inline void draw_eje_y(Imagen_xy<1,1>& img_xy, Imagen_xy<1,1>::Ind x, const ColorRGB& c)
+inline void draw_eje_y(Image_xy<1,1>& img_xy, Image_xy<1,1>::Ind x, const ColorRGB& c)
 { draw_eje_y(img_xy.matrix(), img_xy.j(x), c);}
 
 /// Dibuja el segmento s en la imagen img del color indicado
-// ¿merece la pena definir draw(Imagen_xy<1,1>::Segmento)??? De momento creo que
-// no, por eso lo defino así. Ahora bien, si se usa mucho Imagen_xy<1,1> acabar por
+// ¿merece la pena definir draw(Image_xy<1,1>::Segmento)??? De momento creo que
+// no, por eso lo defino así. Ahora bien, si se usa mucho Image_xy<1,1> acabar por
 // definir todas las funciones de dibujo para esta máscara.
-inline void draw_segmento(Imagen_xy<1,1>& img_xy
-			, const Imagen_xy<1,1>::Point& A
-			, const Imagen_xy<1,1>::Point& B, const ColorRGB& c)
+inline void draw_segmento(Image_xy<1,1>& img_xy
+			, const Image_xy<1,1>::Point& A
+			, const Image_xy<1,1>::Point& B, const ColorRGB& c)
 { draw(img_xy.matrix(), Segmento{img_xy.posicion(A), img_xy.posicion(B)}, c);}
 
 
 /***************************************************************************
- *		    FUNCIONES DE DIBUJO PARA Imagen_rt
+ *		    FUNCIONES DE DIBUJO PARA Image_rt
  ***************************************************************************/
 /// Dibuja la recta rho = cte de color c.
-inline void draw_rayo(  Imagen_rt& img_rt
+inline void draw_rayo(  Image_rt& img_rt
 			, double theta, const ColorRGB& c)
 {
     for (double r = 0.0; r <= img_rt.r_max(); ++r)
@@ -161,7 +161,7 @@ inline void draw_rayo(  Imagen_rt& img_rt
 /// Dibuja una circunferencia de radio r de color c.
 /// incr_theta indica de cuánto en cuánto queremos aumentar el ángulo theta.
 // DUDA: ¿se puede estimar incr_theta a partir de r y r_max? Seguramente.
-inline void draw_circunferencia(  Imagen_rt& img_rt
+inline void draw_circunferencia(  Image_rt& img_rt
 			, double r, const ColorRGB& c
 			, double incr_theta = 0.1)
 {
@@ -171,7 +171,7 @@ inline void draw_circunferencia(  Imagen_rt& img_rt
 
 
 /// Dibuja un array de rayos separados una distancia ancho_grid_theta
-inline void draw_array_rayos(Imagen_rt& img_rt
+inline void draw_array_rayos(Image_rt& img_rt
 			    , double ancho_grid_theta, const ColorRGB& color)
 {
     for (double theta = 0.0; theta < 360.0; theta += ancho_grid_theta)
@@ -181,7 +181,7 @@ inline void draw_array_rayos(Imagen_rt& img_rt
 
 /// Dibuja un array de circunferencias separadas una distancia
 /// ancho_grid_r
-inline void draw_array_circunferencias(Imagen_rt& img_rt
+inline void draw_array_circunferencias(Image_rt& img_rt
 				, double ancho_grid_r
 				, const ColorRGB& color)
 {

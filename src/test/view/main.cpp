@@ -33,16 +33,16 @@ struct const_ColorXYZ_x{
 
 void test_subimagen()
 {
-    test::interfaz("Subimagen");
+    test::interfaz("Subimage");
 
-    img::Imagen img0{2,2};
+    img::Image img0{2,2};
     for_each_ij(img0, [&img0](auto i, auto j){img0(i,j) = img::ColorRGB{i, j, 0};});
     
     {
-	// Subimagen.clone
-	img::Subimagen sb{img0, img0.extension()};
+	// Subimage.clone
+	img::Subimage sb{img0, img0.extension()};
 
-	img::Imagen img1{0,0};
+	img::Image img1{0,0};
 	img1 = clone(sb);
 	CHECK_TRUE(img1.size2D() == img0.size2D(), "clone(size)");
 	CHECK_EQUAL_CONTAINERS(img0.begin(), img0.end(), 
@@ -51,10 +51,10 @@ void test_subimagen()
     }
 
     {
-	// const_Subimagen.clone
-	img::const_Subimagen sb{img0, img0.extension()};
+	// const_Subimage.clone
+	img::const_Subimage sb{img0, img0.extension()};
 
-	img::Imagen img1{0,0};
+	img::Image img1{0,0};
 	img1 = clone(sb);
 	CHECK_TRUE(img1.size2D() == img0.size2D(), "clone(size)");
 //	check_equal_containers(img0.begin(), img0.end(), 
@@ -65,9 +65,9 @@ void test_subimagen()
 
 void test_img_view()
 {
-    test::interfaz("img::Imagen_view");
+    test::interfaz("img::Image_view");
 
-    img::Imagen img0{4,5};	// TODO: falta probar las funciones const!!!
+    img::Image img0{4,5};	// TODO: falta probar las funciones const!!!
 
     for (int i = 0; i < img0.rows(); ++i)
 	for (int j = 0; j < img0.cols(); ++j)
@@ -79,7 +79,7 @@ void test_img_view()
 	auto imgred = imagen_red(img0);
 	for (int i = 0; i < imgred.rows(); ++i)
 	    for (int j = 0; j < imgred.cols(); ++j){
-		CHECK_TRUE(imgred(i,j) == img0(i,j).r, "img::Imagen_red(i,j)");
+		CHECK_TRUE(imgred(i,j) == img0(i,j).r, "img::Image_red(i,j)");
 	    }
 
 	auto p0 = img0.begin();
@@ -106,14 +106,14 @@ void test_img_view()
     }
 
     {
-	std::cout << "\nProbando img::Imagen_rt\n"
+	std::cout << "\nProbando img::Image_rt\n"
 	     <<   "------------------\n";
     
-	img::Imagen img0 = imagen_monocolor(11,11, img::ColorRGB{-1,-1,-1});
+	img::Image img0 = imagen_monocolor(11,11, img::ColorRGB{-1,-1,-1});
 
-	img::Imagen_rt img_rt{img0};
+	img::Image_rt img_rt{img0};
 
-	for (img::Imagen_rt::Ind r = 0; r <= img_rt.r_max(); ++r){
+	for (img::Image_rt::Ind r = 0; r <= img_rt.r_max(); ++r){
 	    img_rt(r, 0.0) = img::ColorRGB{0,0,0};
 	    img_rt(r, 45.0) = img::ColorRGB{45, 45, 45};
 	    img_rt(r, 90.0) = img::ColorRGB{90, 90, 90};
@@ -144,14 +144,14 @@ void test_img_view()
 
 void test_imagen_view_and_subimagen()
 {
-    {// pruebo que compile Matrix_view con img::Imagen
-	// Matrix_view<img::Imagen, Color_red> m {img0, Color_red{}};
-//	Matrix_view<Submatrix<img::Imagen>, Color_red> m {img0, Color_red{}};
+    {// pruebo que compile Matrix_view con img::Image
+	// Matrix_view<img::Image, Color_red> m {img0, Color_red{}};
+//	Matrix_view<Submatrix<img::Image>, Color_red> m {img0, Color_red{}};
 //
 //	auto f = m.row_begin();
     }
 
-    img::Imagen img0{4,5};	
+    img::Image img0{4,5};	
 
     for (int i = 0; i < img0.rows(); ++i)
 	for (int j = 0; j < img0.cols(); ++j)
@@ -159,7 +159,7 @@ void test_imagen_view_and_subimagen()
 				 (i*img0.cols() + j)*10,
 				 (i*img0.cols() + j)*20};
 
-    img::Subimagen sb{img0, img0.extension()};
+    img::Subimage sb{img0, img0.extension()};
 
 
     {
@@ -230,7 +230,7 @@ void test_imagen_view_and_subimagen()
 
 void test_imagen_xy()
 {
-    img::Imagen img0{4,5};
+    img::Image img0{4,5};
 
     for (int i = 0; i < img0.rows(); ++i)
 	for (int j = 0; j < img0.cols(); ++j)
@@ -239,7 +239,7 @@ void test_imagen_xy()
     alp::print(std::cout, img0);
 
     {
-	img::Imagen_xy<1,1> imgxy{img0};
+	img::Image_xy<1,1> imgxy{img0};
 	std::cout << "Imprimimos img_xy\n";
 	std::cout << "-----------------\n";
 	for (int y = 0; y <= imgxy.y_max(); ++y){
@@ -250,9 +250,9 @@ void test_imagen_xy()
 	}
     }
     {// caso const
-	const img::Imagen& img1 = img0;
+	const img::Image& img1 = img0;
 
-	img::const_Imagen_xy<1,1> imgxy{img1};
+	img::const_Image_xy<1,1> imgxy{img1};
 	std::cout << "Imprimimos const_img_xy\n";
 	std::cout << "-----------------------\n";
 	for (int y = 0; y <= imgxy.y_max(); ++y){
@@ -264,9 +264,9 @@ void test_imagen_xy()
     }
 
     {// caso genérico
-	using Point = img::Imagen_xy<1,1>::Point;
+	using Point = img::Image_xy<1,1>::Point;
 
-	img::Imagen_xy<1,1> imgxy{img0, 1, 3};
+	img::Image_xy<1,1> imgxy{img0, 1, 3};
 	CHECK_TRUE(imgxy.rows()  == 4, "rows");
 	CHECK_TRUE(imgxy.cols()  == 5, "cols");
 	CHECK_TRUE(imgxy.x_min() == -3, "x_min");
