@@ -68,7 +68,7 @@ struct std::numeric_limits<img::Color>{
 
 
 namespace img{
-inline bool es_color(int c)
+inline bool is_color(int c)
 { return (alp::esta_entre(c, std::numeric_limits<img::Color>::min(), 
 			     std::numeric_limits<img::Color>::max())); }
 
@@ -202,8 +202,8 @@ inline ColorRGB operator/(const ColorRGB& a, int n)
 /// Como ando experimentando, voy a operar con los colores. El resultado
 /// pudiera estar fuera del cubo de color. Esta función nos dice si 'c' es
 /// un color válido o no.
-inline bool es_color(const ColorRGB& c) 
-{return (img::es_color(c.r) && img::es_color(c.g) && img::es_color(c.b));}
+inline bool is_color(const ColorRGB& c) 
+{return (img::is_color(c.r) && img::is_color(c.g) && img::is_color(c.b));}
 
 /// ¿'c' es negro?
 inline bool es_negro(const ColorRGB& c) 
