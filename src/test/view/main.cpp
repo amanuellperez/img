@@ -303,6 +303,22 @@ void test_imagen_xy()
 }
 
 
+void test_image_as_array()
+{
+    test::interfaz("Image_as_array");
+    img::Image img0{4,5};
+
+
+    img::Image_as_array v{img0};
+    for (int i = 0; i < v.size(); ++i)
+	v[i] = i;
+
+    CHECK_TRUE(v.size() == img0.size() * 3, "size()");
+
+    for (int i = 0; i < v.size(); ++i)
+	CHECK_TRUE(v[i] == i, "operator[]");
+
+}
 
 int main()
 {
@@ -311,6 +327,7 @@ try{
     test_img_view();
     test_imagen_xy();
     test_imagen_view_and_subimagen();
+    test_image_as_array();
 
 }catch(std::exception& e){
     std::cerr << "EXCEPTION: " << e.what() << '\n';

@@ -1,4 +1,4 @@
-// Copyright (C) 2020 A.Manuel L.Perez <amanuel.lperez@gmail.com>
+// Copyright (C) 2020-2022 A.Manuel L.Perez <amanuel.lperez@gmail.com>
 //
 // This file is part of the ALP Library.
 //
@@ -22,17 +22,14 @@
  *
  *  - DESCRIPCION: Views que podemos aplicar a una imagen
  *
- *  - COMENTARIOS: 
- *
  *  - HISTORIA:
  *    A.Manuel L.Perez
  *	30/12/2017 Escrito
  *	26/07/2020 Cambio interfaz de Image_xy. Era raro...
  *	28/11/2020 Migro Image_xy a alp.
+ *	01/09/2022 Image_as_array
  *
  ****************************************************************************/
-
-
 #include <alp_concepts.h>
 #include <alp_matrix_view.h>
 #include <alp_submatrix.h>
@@ -239,7 +236,71 @@ private:
 
 
 
+/***************************************************************************
+ *			    Image_as_array
+ ***************************************************************************/
+template <typename Image_type>
+class Image_as_array_base{
+public:
+    using size_type = Image_type::size_type;
+    static constexpr int ncolors = Image_type::value_type::ncolors;
+    static_assert(ncolors == 3); // usamos que son r, g, b en operator()
 
+    Image_as_array_base(Image_type& img0) : img_{img0} { }
+
+    size_type size() const { return img_.size() * ncolors;}
+
+    alp::Same_const_as<int, Image_type>& operator[](size_type n);
+    const int& operator[](size_type n) const;
+
+private:
+    Image_type& img_;
+};
+
+
+template <typename Image_type>
+alp::Same_const_as<int, Image_type>& 
+Image_as_array_base<Image_type>::operator[](size_type n)
+{
+    size_type cols_x_i_plus_j = n / 3; // cols*i + j
+    size_type c = n - 3*cols_x_i_plus_j;
+    size_type i = cols_x_i_plus_j / img_.cols();
+    size_type j = cols_x_i_plus_j - i * img_.cols();
+
+    switch (c){
+	break; case 0: return img_(i, j).r;
+	break; case 1: return img_(i, j).g;
+	break; case 2: return img_(i, j).b;
+    }
+
+    throw std::logic_error{
+        "Image_as_array_base::operator[]: what I am doing here?"};
+}
+
+
+template <typename Image_type>
+const int& 
+Image_as_array_base<Image_type>::operator[](size_type n) const
+{
+    size_type cols_x_i_plus_j = n / 3; // cols*i + j
+    size_type c = n - 3*cols_x_i_plus_j;
+    size_type i = cols_x_i_plus_j / img_.cols();
+    size_type j = cols_x_i_plus_j - i * img_.cols();
+
+    switch (c){
+	break; case 0: return img_(i, j).r;
+	break; case 1: return img_(i, j).g;
+	break; case 2: return img_(i, j).b;
+    }
+
+    throw std::logic_error{
+        "Image_as_array_base::operator[]: what I am doing here?"};
+}
+
+
+using Image_as_array = Image_as_array_base<Image>;
+// No funciona bien const_Image_as_array. Si se descomenta probarlo.
+//using const_Image_as_array = Image_as_array_base<const Image>;
 
 
 }

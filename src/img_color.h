@@ -1,4 +1,4 @@
-// Copyright (C) 2020 A.Manuel L.Perez <amanuel.lperez@gmail.com>
+// Copyright (C) 2020-2022 A.Manuel L.Perez <amanuel.lperez@gmail.com>
 //
 // This file is part of the ALP Library.
 //
@@ -36,6 +36,7 @@
  *	28/05/2020 Aproximado
  *	31/05/2020 Redefino intensidad.
  *	07/12/2020 std::numeric_limits<Color>
+ *	01/09/2022 ncolors
  *
  ****************************************************************************/
 
@@ -85,6 +86,7 @@ inline bool is_color(int c)
 struct ColorRGB
 {
     using value_type = int;
+    static constexpr int ncolors = 3; // r,g,b
 
     value_type r, g, b;
 
@@ -108,6 +110,7 @@ struct ColorRGB
     ColorRGB& operator-=(const ColorRGB& c);
 
     ColorRGB operator-() const;
+
 
     // Los 12 colores del hexágono. Dependen del tamaño del color!!!
     static constexpr ColorRGB azul()	    {return ColorRGB{  0,  0, 255};}	//  0º
