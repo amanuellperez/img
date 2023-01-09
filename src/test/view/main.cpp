@@ -25,6 +25,7 @@
 
 #include <alp_test.h>
 
+using namespace test;
 
 struct const_ColorXYZ_x{
     const double operator()(const img::ColorRGB& c) const 

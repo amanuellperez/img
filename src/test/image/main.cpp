@@ -22,6 +22,8 @@
 #include <alp_test.h>
 
 
+using namespace test;
+
 template <typename Img>
 void test_imagen_funciones_const(Img& img1)
 {

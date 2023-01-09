@@ -23,6 +23,7 @@
 #include <alp_test.h>
 #include <iostream>
 
+using namespace test;
 
 void test_iterator_color()
 {

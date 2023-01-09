@@ -23,6 +23,8 @@
 #include <iostream>
 
 
+using namespace test;
+
 void test_draw()
 {
     test::interfaz("draw");

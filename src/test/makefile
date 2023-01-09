@@ -1,7 +1,7 @@
 DIRS:= algorithm\
 	color\
 	draw\
-	imagen\
+	image\
 	view
 
 #	escala\
