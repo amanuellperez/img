@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 A.Manuel L.Perez <amanuel.lperez@gmail.com>
+// Copyright (C) 2020-2022 Manuel Perez <manuel2perez@proton.me>
 //
 // This file is part of the ALP Library.
 //
@@ -26,7 +26,7 @@
  *		ColorRGB = (r,g,b)
  *
  *   - HISTORIA:
- *    A.Manuel L.Perez
+ *    Manuel Perez
  *      04/12/2015 Escrito
  *      28/01/2016 Añado sistemas de coordenadas ColorXYZ,...
  *      28/02/2016 Elimino Color (lo dejo todo como int)

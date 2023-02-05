@@ -1,4 +1,4 @@
-// Copyright (C) 2020 A.Manuel L.Perez <amanuel.lperez@gmail.com>
+// Copyright (C) 2020 Manuel Perez <manuel2perez@proton.me>
 //
 // This file is part of the ALP Library.
 //
@@ -29,7 +29,7 @@
  *	Que no aparezca en este fichero en ningún sitio ColorRGB.
  *
  *  - HISTORIA:
- *    A.Manuel L.Perez
+ *    Manuel Perez
  *	22/03/2016 Escrito
  *	04/08/2020 rotate
  *

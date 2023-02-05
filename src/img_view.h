@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 A.Manuel L.Perez <amanuel.lperez@gmail.com>
+// Copyright (C) 2020-2022 Manuel Perez <manuel2perez@proton.me>
 //
 // This file is part of the ALP Library.
 //
@@ -23,7 +23,7 @@
  *  - DESCRIPCION: Views que podemos aplicar a una imagen
  *
  *  - HISTORIA:
- *    A.Manuel L.Perez
+ *    Manuel Perez
  *	30/12/2017 Escrito
  *	26/07/2020 Cambio interfaz de Image_xy. Era raro...
  *	28/11/2020 Migro Image_xy a alp.
